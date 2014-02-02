@@ -38,16 +38,15 @@ namespace WinFormsGraphicsDevice
         public virtual void draw(SpriteBatch batch)
         {
             //draw this and all children
-            for (int i = 0; i < children.Count; i++)
+            if (visible)
             {
-                children[i].draw(batch);
+                for (int i = 0; i < children.Count; i++)
+                {
+                    children[i].draw(batch);
+                }
             }
         }
 
-        public E_UI_TYPES getUIType()
-        {
-            return type;
-        }
 
         //mutators can go ehre
         public void setPosition(Vector2 newPosition)
@@ -57,6 +56,15 @@ namespace WinFormsGraphicsDevice
         public void setSize(Vector2 newSize)
         {
             size = newSize;
+        }
+        public void setVisible(bool newVisible)
+        {
+            visible = newVisible;
+        }
+
+        public void addChild(UIElement newChild)
+        {
+            children.Add(newChild);
         }
 
         //some accessors go here
@@ -68,6 +76,15 @@ namespace WinFormsGraphicsDevice
         {
             return size;
         }
+        public virtual E_UI_TYPES getUIType()
+        {
+            return type;
+        }
+        public bool getVisible()
+        {
+            return visible;
+        }
+
         public UIElement getParent()
         {
             return parent;

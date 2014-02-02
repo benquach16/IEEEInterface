@@ -16,14 +16,18 @@ namespace WinFormsGraphicsDevice
         {
             //initialize the window texture
             //remporary thing here
+            
+        }
+        public void loadContent(GraphicsDevice graphicsDevice)
+        {
 
         }
-
         //override pure virtual functions
         public override void draw(SpriteBatch batch)
         {
             //draw a rectangle that is the of the position and size specificed
             batch.Draw(winTex, position, Color.White);
+            base.draw(batch);
         }
         public override UIElement.E_UI_TYPES getUIType()
         {
