@@ -22,6 +22,7 @@ namespace WinFormsGraphicsDevice
                 colorData[i] = Color.Aqua;
             winTex.SetData<Color>(colorData);
         }
+        //this is probably deprecated
         public void loadContent(GraphicsDevice graphicsDevice)
         {
 
@@ -30,8 +31,9 @@ namespace WinFormsGraphicsDevice
         public override void draw(SpriteBatch batch)
         {
             //draw a rectangle that is the of the position and size specificed
-            batch.Draw(winTex, position, Color.White);
-            //base.draw(batch);
+            if(visible)
+                batch.Draw(winTex, position, Color.White);
+            base.draw(batch);
         }
         public override UIElement.E_UI_TYPES getUIType()
         {

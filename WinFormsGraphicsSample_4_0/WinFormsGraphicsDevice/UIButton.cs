@@ -10,9 +10,15 @@ namespace WinFormsGraphicsDevice
     //setting up more hierarchy
     class UIButton : WinFormsGraphicsDevice.UIElement
     {
-        public UIButton(Vector2 position, Vector2 size, UIElement parent) :
+        public UIButton(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, UIElement parent) :
             base(position, size, parent, E_UI_TYPES.UI_BUTTON)
         {
+
+        }
+
+        public bool getMouseOver()
+        {
+            //get the x and y coords for mouse and check
         }
     }
 }

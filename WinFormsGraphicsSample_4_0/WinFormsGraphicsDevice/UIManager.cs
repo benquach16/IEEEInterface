@@ -8,9 +8,14 @@ namespace WinFormsGraphicsDevice
     class UIManager
     {
         UIElement root;
-        UIManager()
+        public UIManager()
         {
             //setup the root ui element at 0,0
         }
+        public void drawAll()
+        {
+            //draw all ui elements here
+        }
+
     }
 }

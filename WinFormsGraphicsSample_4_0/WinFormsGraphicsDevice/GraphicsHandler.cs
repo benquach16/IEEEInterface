@@ -48,7 +48,7 @@ namespace WinFormsGraphicsDevice
 
             MouseMove += new MouseEventHandler(GH_MouseMove);
             t = new UIWindow(GraphicsDevice, new Vector2(40, 40), new Vector2(500, 500), null);
- 
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 

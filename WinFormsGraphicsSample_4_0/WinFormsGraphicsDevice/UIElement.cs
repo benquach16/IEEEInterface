@@ -36,6 +36,7 @@ namespace WinFormsGraphicsDevice
             this.type = type;
             this.visible = true;
             this.parent = parent;
+            this.children = new List<UIElement>();
             //yay for c++ design pattersn
             if (parent != null)
             {
