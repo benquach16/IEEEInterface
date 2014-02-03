@@ -20,6 +20,7 @@ namespace WinFormsGraphicsDevice
         };
         //setup class hierarchy
         protected Vector2 position;
+        protected Vector2 absolutePosition;
         protected Vector2 size;
         protected E_UI_TYPES type;
         protected bool visible;
@@ -34,6 +35,17 @@ namespace WinFormsGraphicsDevice
             this.size = size;
             this.type = type;
             this.visible = true;
+            this.parent = parent;
+            //yay for c++ design pattersn
+            if (parent != null)
+            {
+                parent.addChild(this);
+                absolutePosition = parent.getPosition() + position;
+            }
+            else
+            {
+                absolutePosition = position;
+            }
         }
         public virtual void draw(SpriteBatch batch)
         {

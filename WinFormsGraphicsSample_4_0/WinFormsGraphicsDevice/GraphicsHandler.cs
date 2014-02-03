@@ -27,9 +27,9 @@ namespace WinFormsGraphicsDevice
     {
         BasicEffect effect;
         Stopwatch timer;
-        Texture2D t;
         SpriteBatch spriteBatch;
-
+        Texture2D bkg;
+        UIWindow t;
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -47,11 +47,8 @@ namespace WinFormsGraphicsDevice
             Application.Idle += delegate { Invalidate(); };
 
             MouseMove += new MouseEventHandler(GH_MouseMove);
-            t = new Texture2D(GraphicsDevice, 500, 500, false, SurfaceFormat.Color);
-            Color[] colorData = new Color[500*500];
-            for (int i = 0; i <500*500; i++)
-                colorData[i] = Color.Aqua;
-            t.SetData<Color>(colorData);
+            t = new UIWindow(GraphicsDevice, new Vector2(40, 40), new Vector2(500, 500), null);
+ 
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
@@ -74,7 +71,8 @@ namespace WinFormsGraphicsDevice
 
             // Draw the triangle.
             spriteBatch.Begin();
-            spriteBatch.Draw(t, new Vector2(500,500), Color.White);
+            //draw cool background first
+            t.draw(spriteBatch);
             spriteBatch.End();
             
         }
