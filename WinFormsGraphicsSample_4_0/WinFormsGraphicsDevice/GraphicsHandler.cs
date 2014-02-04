@@ -29,6 +29,7 @@ namespace WinFormsGraphicsDevice
         Stopwatch timer;
         SpriteBatch spriteBatch;
         Texture2D bkg;
+        UIManager uiManager;
         UIWindow t;
         /// <summary>
         /// Initializes the control.
@@ -47,9 +48,10 @@ namespace WinFormsGraphicsDevice
             Application.Idle += delegate { Invalidate(); };
 
             MouseMove += new MouseEventHandler(GH_MouseMove);
-            t = new UIWindow(GraphicsDevice, new Vector2(40, 40), new Vector2(500, 500), null);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            uiManager = new UIManager(GraphicsDevice);
+            uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)
@@ -62,7 +64,7 @@ namespace WinFormsGraphicsDevice
         /// </summary>
         protected override void Draw()
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             float aspect = GraphicsDevice.Viewport.AspectRatio;
             effect.Projection = Matrix.CreatePerspectiveFieldOfView(1, aspect, 1, 10);
@@ -72,7 +74,7 @@ namespace WinFormsGraphicsDevice
             // Draw the triangle.
             spriteBatch.Begin();
             //draw cool background first
-            t.draw(spriteBatch);
+            uiManager.drawAll(spriteBatch);
             spriteBatch.End();
             
         }
