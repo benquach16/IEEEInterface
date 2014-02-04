@@ -11,16 +11,29 @@ namespace WinFormsGraphicsDevice
     //setting up more hierarchy
     class UIButton : WinFormsGraphicsDevice.UIElement
     {
-        protected char text;
-        public UIButton(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, char text, UIElement parent) :
+        protected String text;
+        protected Texture2D butTex;
+        public UIButton(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, String text, UIElement parent) :
             base(position, size, parent, E_UI_TYPES.UI_BUTTON)
         {
             this.text = text;
+            this.butTex = new Texture2D(graphicsDevice, (int)size.X, (int)size.Y);
+            Color[] colorData = new Color[(int)size.X * (int)size.Y];
+            for (int i = 0; i < size.X * size.Y; i++)
+            {
+                colorData[i] = Color.Gainsboro;
+            }
+            butTex.SetData<Color>(colorData);
         }
 
         public override void draw(SpriteBatch batch)
         {
             //draw chillun
+            if (visible)
+            {
+                //draw this
+                batch.Draw(butTex, position, Color.White);
+            }
             base.draw(batch);
         }
         //acccessor function
@@ -30,7 +43,10 @@ namespace WinFormsGraphicsDevice
             return ((Mouse.GetState().X > position.X && Mouse.GetState().X + size.X < position.X + size.X)
                 && (Mouse.GetState().Y > position.Y && Mouse.GetState().Y + size.Y < position.Y + size.Y));
         }
-
+        public String getText()
+        {
+            return text;
+        }
 
     }
 }

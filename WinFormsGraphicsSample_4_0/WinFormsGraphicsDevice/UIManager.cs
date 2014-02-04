@@ -40,7 +40,7 @@ namespace WinFormsGraphicsDevice
             }
             return ret;
         }
-        public UIButton addButton(Vector2 position, Vector2 size, char text, UIElement parent = null)
+        public UIButton addButton(Vector2 position, Vector2 size, String text, UIElement parent = null)
         {
             UIButton ret = new UIButton(graphicsDevice, position, size, text, parent);
             if (parent == null)

@@ -28,7 +28,7 @@ namespace WinFormsGraphicsDevice
         protected UIElement parent;
         protected List<UIElement> children;
 
-
+        //base function
         public UIElement(Vector2 position, Vector2 size, UIElement parent, E_UI_TYPES type)
         {
             this.position = position;
@@ -47,6 +47,23 @@ namespace WinFormsGraphicsDevice
             {
                 absolutePosition = position;
             }
+        }
+        //destructor
+        //very important fucntion
+        ~UIElement()
+        {
+            if (this.parent != null)
+            {
+                //if we have a parent remove this from its children
+                this.parent.removeChild(this);
+            }
+            //delete all chidlren
+            for (int i = 0; i < children.Count; i++)
+            {
+                children[i] = null;
+            }
+            //do garbage collection
+            GC.Collect();
         }
         public virtual void draw(SpriteBatch batch)
         {
@@ -78,6 +95,12 @@ namespace WinFormsGraphicsDevice
         public void addChild(UIElement newChild)
         {
             children.Add(newChild);
+        }
+
+        public void removeChild(UIElement child)
+        {
+            children.Remove(child);
+            children.TrimExcess();
         }
 
         //some accessors go here

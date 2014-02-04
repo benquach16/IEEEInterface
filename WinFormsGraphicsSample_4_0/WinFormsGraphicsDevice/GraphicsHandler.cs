@@ -8,6 +8,7 @@
 #endregion
 
 #region Using Statements
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
@@ -30,7 +31,6 @@ namespace WinFormsGraphicsDevice
         SpriteBatch spriteBatch;
         Texture2D bkg;
         UIManager uiManager;
-        UIWindow t;
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -52,6 +52,8 @@ namespace WinFormsGraphicsDevice
             spriteBatch = new SpriteBatch(GraphicsDevice);
             uiManager = new UIManager(GraphicsDevice);
             uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
+            String w = "Weather";
+            uiManager.addButton(new Vector2(20, 20), new Vector2(200, 20), w);
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)

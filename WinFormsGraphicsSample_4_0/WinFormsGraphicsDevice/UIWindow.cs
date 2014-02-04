@@ -10,6 +10,7 @@ namespace WinFormsGraphicsDevice
     class UIWindow : UIElement
     {
         protected Texture2D winTex;
+        protected Texture2D glass;
         protected Color color;
         protected float alpha;
         //inheritance
@@ -21,7 +22,11 @@ namespace WinFormsGraphicsDevice
             winTex = new Texture2D(graphicsDevice, (int)size.X, (int)size.Y, false, SurfaceFormat.Color);
             Color[] colorData = new Color[(int)size.X * (int)size.Y];
             for (int i = 0; i < size.X * size.Y; i++)
-                colorData[i] = Color.Gainsboro;
+            {
+                //colorData[i] = Color.Gainsboro;
+                int texColour = (i / (768 * 5));
+                colorData[i] = new Color(texColour, texColour, texColour, 0);
+            }
             winTex.SetData<Color>(colorData);
 
             this.alpha = 0.5f;
