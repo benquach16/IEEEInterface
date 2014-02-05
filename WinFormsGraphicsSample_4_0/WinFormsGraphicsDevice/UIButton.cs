@@ -21,7 +21,7 @@ namespace WinFormsGraphicsDevice
             Color[] colorData = new Color[(int)size.X * (int)size.Y];
             for (int i = 0; i < size.X * size.Y; i++)
             {
-                colorData[i] = Color.Gainsboro;
+                colorData[i] = Color.DarkGray;
             }
             butTex.SetData<Color>(colorData);
         }

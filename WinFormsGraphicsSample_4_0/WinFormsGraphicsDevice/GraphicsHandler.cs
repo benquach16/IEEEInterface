@@ -12,7 +12,12 @@ using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace WinFormsGraphicsDevice
@@ -54,6 +59,7 @@ namespace WinFormsGraphicsDevice
             uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
             String w = "Weather";
             uiManager.addButton(new Vector2(20, 20), new Vector2(200, 20), w);
+
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)

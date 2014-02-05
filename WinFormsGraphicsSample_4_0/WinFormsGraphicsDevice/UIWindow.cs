@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WinFormsGraphicsDevice
 {
+    //class for windows
     class UIWindow : UIElement
     {
         protected Texture2D winTex;
@@ -24,8 +25,15 @@ namespace WinFormsGraphicsDevice
             for (int i = 0; i < size.X * size.Y; i++)
             {
                 //colorData[i] = Color.Gainsboro;
-                int texColour = (i / (768 * 5));
-                colorData[i] = new Color(texColour, texColour, texColour, 0);
+                if (i % size.X == 0 || i % size.X == size.X-1)
+                {
+                    colorData[i] = new Color(255, 255, 255, 255);
+                }
+                else
+                {
+                    int texColour = (i / (768 * 5));
+                    colorData[i] = new Color(texColour, texColour, texColour, 0);
+                }
             }
             winTex.SetData<Color>(colorData);
 

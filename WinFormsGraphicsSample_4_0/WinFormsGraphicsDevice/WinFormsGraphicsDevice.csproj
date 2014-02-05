@@ -68,6 +68,7 @@
     <Compile Include="UIElement.cs" />
     <Compile Include="UIImage.cs" />
     <Compile Include="UIManager.cs" />
+    <Compile Include="UIStaticText.cs" />
     <Compile Include="UIWindow.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
