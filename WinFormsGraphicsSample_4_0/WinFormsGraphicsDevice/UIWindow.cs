@@ -27,17 +27,22 @@ namespace WinFormsGraphicsDevice
                 //colorData[i] = Color.Gainsboro;
                 if (i % size.X == 0 || i % size.X == size.X-1)
                 {
-                    colorData[i] = new Color(255, 255, 255, 255);
+                    colorData[i] = new Color(200, 200, 200, 255);
+                }
+                else if ( i < size.X || (i < size.X*size.Y) && i>size.X*(size.Y-1))
+                {
+                    colorData[i] = new Color(200, 200, 200, 255);
                 }
                 else
                 {
-                    int texColour = (i / (768 * 5));
+                    //int texColour = (i / (2000));
+                    int texColour = 64;
                     colorData[i] = new Color(texColour, texColour, texColour, 0);
                 }
             }
             winTex.SetData<Color>(colorData);
 
-            this.alpha = 0.5f;
+            this.alpha = 0.3f;
         }
         //this is probably deprecated
         public void loadContent(GraphicsDevice graphicsDevice)

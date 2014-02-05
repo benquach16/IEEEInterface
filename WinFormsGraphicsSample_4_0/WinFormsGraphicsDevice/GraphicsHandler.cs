@@ -36,6 +36,7 @@ namespace WinFormsGraphicsDevice
         SpriteBatch spriteBatch;
         Texture2D bkg;
         UIManager uiManager;
+        ContentManager Content;
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -58,8 +59,10 @@ namespace WinFormsGraphicsDevice
             uiManager = new UIManager(GraphicsDevice);
             uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
             String w = "Weather";
-            uiManager.addButton(new Vector2(20, 20), new Vector2(200, 20), w);
-
+            uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w);
+            ServiceContainer services = new ServiceContainer();
+            Content = new ContentManager(services);
+            //Content.Load<Texture2D>("bkg.jpg");
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)

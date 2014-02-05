@@ -13,6 +13,8 @@ namespace WinFormsGraphicsDevice
     {
         protected String text;
         protected Texture2D butTex;
+        protected float alpha;
+
         public UIButton(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, String text, UIElement parent) :
             base(position, size, parent, E_UI_TYPES.UI_BUTTON)
         {
@@ -21,9 +23,22 @@ namespace WinFormsGraphicsDevice
             Color[] colorData = new Color[(int)size.X * (int)size.Y];
             for (int i = 0; i < size.X * size.Y; i++)
             {
-                colorData[i] = Color.DarkGray;
+                if (i % size.X == 0 || i % size.X == size.X - 1)
+                {
+                    colorData[i] = new Color(200, 200, 200, 255);
+                }
+                else if (i < size.X || (i < size.X * size.Y) && i > size.X * (size.Y - 1))
+                {
+                    colorData[i] = new Color(200, 200, 200, 255);
+                }
+                else
+                {
+                    int texColour = 64;
+                    colorData[i] = new Color(texColour, texColour, texColour, 0);
+                }
             }
             butTex.SetData<Color>(colorData);
+            alpha = 0.3f;
         }
 
         public override void draw(SpriteBatch batch)
@@ -32,7 +47,8 @@ namespace WinFormsGraphicsDevice
             if (visible)
             {
                 //draw this
-                batch.Draw(butTex, position, Color.White);
+                batch.Draw(butTex, position, Color.White * alpha);
+                //batch.DrawString(defaultFont.spritefont, text, position, Color.White);
             }
             base.draw(batch);
         }
