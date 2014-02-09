@@ -22,6 +22,16 @@ namespace WinFormsGraphicsDevice
             this.graphicsDevice = graphicsDevice;
             this.unparentedNodes = new List<UIElement>();
         }
+        //destructor
+        ~UIManager()
+        {
+            for (int i = 0; i < unparentedNodes.Count; i++)
+            {
+                //kill
+                unparentedNodes[i] = null;
+            }
+            GC.Collect();
+        }
         public void drawAll(SpriteBatch batch)
         {
             //draw all ui elements here
@@ -43,6 +53,7 @@ namespace WinFormsGraphicsDevice
             }
             return ret;
         }
+        //adds a button to the scene
         public UIButton addButton(Vector2 position, Vector2 size, String text, SpriteFont font, UIElement parent = null)
         {
             UIButton ret = new UIButton(graphicsDevice, position, size, text, font, parent);

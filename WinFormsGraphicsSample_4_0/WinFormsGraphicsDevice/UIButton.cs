@@ -57,6 +57,7 @@ namespace WinFormsGraphicsDevice
             }
             base.draw(batch);
         }
+
         //acccessor function
         public bool getMouseOver()
         {
@@ -64,9 +65,15 @@ namespace WinFormsGraphicsDevice
             return ((Mouse.GetState().X > position.X && Mouse.GetState().X < position.X + size.X)
                 && (Mouse.GetState().Y > position.Y && Mouse.GetState().Y < position.Y + size.Y));
         }
+
         public String getText()
         {
             return text;
+        }
+
+        public void setText(String newText)
+        {
+            text = newText;
         }
 
     }

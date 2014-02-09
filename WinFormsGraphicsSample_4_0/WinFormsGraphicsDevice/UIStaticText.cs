@@ -31,5 +31,14 @@ namespace WinFormsGraphicsDevice
             }
             base.draw(batch);
         }
+
+        public String getText()
+        {
+            return text;
+        }
+        public void setText(String newText)
+        {
+            text = newText;
+        }
     }
 }
