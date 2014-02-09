@@ -37,6 +37,8 @@ namespace WinFormsGraphicsDevice
         Texture2D bkg;
         UIManager uiManager;
         ContentManager Content;
+        UIWindow weatherWindow;
+        UIButton weatherButton;
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -64,10 +66,11 @@ namespace WinFormsGraphicsDevice
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
 
             uiManager = new UIManager(GraphicsDevice);
-            UIWindow window = uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
+            weatherWindow = uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
+            weatherWindow.setVisible(false);
             String w = "Weather";
-            uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w, font);
-            uiManager.addStaticText(new Vector2(20,20), new Vector2(200,200), w, font, window);
+            weatherButton = uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w, font);
+            uiManager.addStaticText(new Vector2(20,20), new Vector2(200,200), w, font, weatherWindow);
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)
@@ -93,6 +96,11 @@ namespace WinFormsGraphicsDevice
             spriteBatch.Draw(bkg, new Rectangle(0, 0, 1366, 768), Color.White);
             uiManager.drawAll(spriteBatch);
             spriteBatch.End();
+
+            if (weatherButton.getMouseOver())
+            {
+                weatherWindow.setVisible(true);
+            }
             
         }
     }
