@@ -59,7 +59,7 @@ namespace WinFormsGraphicsDevice
 
             ServiceContainer services = new ServiceContainer();
             Content = new ContentManager(Services, "Content");
-            //Content.Load<Texture2D>("bkg.jpg");
+            bkg = Content.Load<Texture2D>("bkg");
             //TODO: REPLACE THIS WITH NON SHITTY FONT
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
 
@@ -67,7 +67,7 @@ namespace WinFormsGraphicsDevice
             UIWindow window = uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
             String w = "Weather";
             uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w, font);
-            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), w, font, window);
+            uiManager.addStaticText(new Vector2(20,20), new Vector2(200,200), w, font, window);
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)
@@ -90,6 +90,7 @@ namespace WinFormsGraphicsDevice
             // Draw the triangle.
             spriteBatch.Begin();
             //draw cool background first
+            spriteBatch.Draw(bkg, new Rectangle(0, 0, 1366, 768), Color.White);
             uiManager.drawAll(spriteBatch);
             spriteBatch.End();
             

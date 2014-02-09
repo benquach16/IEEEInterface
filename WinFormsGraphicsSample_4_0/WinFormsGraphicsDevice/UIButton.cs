@@ -36,7 +36,7 @@ namespace WinFormsGraphicsDevice
                 else
                 {
                     int texColor = 64;
-                    texColor += i / 120;
+                    texColor -= i / 250;
                     colorData[i] = new Color(texColor, texColor, texColor, 0);
                 }
             }
