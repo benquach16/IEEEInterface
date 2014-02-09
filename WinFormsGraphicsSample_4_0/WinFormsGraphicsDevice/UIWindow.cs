@@ -36,8 +36,8 @@ namespace WinFormsGraphicsDevice
                 else
                 {
                     //int texColour = (i / (2000));
-                    int texColour = 64;
-                    colorData[i] = new Color(texColour, texColour, texColour, 0);
+                    int texColor = 64;
+                    colorData[i] = new Color(texColor, texColor, texColor, 0);
                 }
             }
             winTex.SetData<Color>(colorData);

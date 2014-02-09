@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsGraphicsDevice", "WinFormsGraphicsDevice\WinFormsGraphicsDevice.csproj", "{A8A938D0-3179-454F-B390-AA29F2606732}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentLibrary", "WinFormsGraphicsDevice\ContentLibrary\ContentLibrary.csproj", "{396ADBE6-FB16-4DBA-8C70-C16A46B448EA}"

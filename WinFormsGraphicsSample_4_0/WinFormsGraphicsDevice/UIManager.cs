@@ -43,12 +43,22 @@ namespace WinFormsGraphicsDevice
             }
             return ret;
         }
-        public UIButton addButton(Vector2 position, Vector2 size, String text, UIElement parent = null)
+        public UIButton addButton(Vector2 position, Vector2 size, String text, SpriteFont font, UIElement parent = null)
         {
-            UIButton ret = new UIButton(graphicsDevice, position, size, text, parent);
+            UIButton ret = new UIButton(graphicsDevice, position, size, text, font, parent);
             if (parent == null)
             {
                 unparentedNodes.Add(ret);
+            }
+            return ret;
+        }
+        public UIStaticText addStaticText(Vector2 position, Vector2 size, String text, SpriteFont font, UIElement parent = null)
+        {
+            UIStaticText ret = new UIStaticText(position, size, text, font, parent);
+            if (parent == null)
+            {
+                unparentedNodes.Add(ret);
+
             }
             return ret;
         }

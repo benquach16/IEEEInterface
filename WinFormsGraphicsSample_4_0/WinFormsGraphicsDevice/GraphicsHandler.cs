@@ -56,13 +56,18 @@ namespace WinFormsGraphicsDevice
             MouseMove += new MouseEventHandler(GH_MouseMove);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            uiManager = new UIManager(GraphicsDevice);
-            uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
-            String w = "Weather";
-            uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w);
+
             ServiceContainer services = new ServiceContainer();
-            Content = new ContentManager(services);
+            Content = new ContentManager(Services, "Content");
             //Content.Load<Texture2D>("bkg.jpg");
+            //TODO: REPLACE THIS WITH NON SHITTY FONT
+            SpriteFont font = Content.Load<SpriteFont>("defaultFont");
+
+            uiManager = new UIManager(GraphicsDevice);
+            UIWindow window = uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
+            String w = "Weather";
+            uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w, font);
+            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), w, font, window);
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)

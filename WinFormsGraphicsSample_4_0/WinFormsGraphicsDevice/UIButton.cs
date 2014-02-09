@@ -14,11 +14,13 @@ namespace WinFormsGraphicsDevice
         protected String text;
         protected Texture2D butTex;
         protected float alpha;
-
-        public UIButton(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, String text, UIElement parent) :
+        protected SpriteFont font;
+        //Long consturctor
+        public UIButton(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, String text, SpriteFont font, UIElement parent) :
             base(position, size, parent, E_UI_TYPES.UI_BUTTON)
         {
             this.text = text;
+            this.font = font;
             this.butTex = new Texture2D(graphicsDevice, (int)size.X, (int)size.Y);
             Color[] colorData = new Color[(int)size.X * (int)size.Y];
             for (int i = 0; i < size.X * size.Y; i++)
@@ -33,8 +35,9 @@ namespace WinFormsGraphicsDevice
                 }
                 else
                 {
-                    int texColour = 64;
-                    colorData[i] = new Color(texColour, texColour, texColour, 0);
+                    int texColor = 64;
+                    texColor += i / 120;
+                    colorData[i] = new Color(texColor, texColor, texColor, 0);
                 }
             }
             butTex.SetData<Color>(colorData);
@@ -48,7 +51,9 @@ namespace WinFormsGraphicsDevice
             {
                 //draw this
                 batch.Draw(butTex, position, Color.White * alpha);
-                //batch.DrawString(defaultFont.spritefont, text, position, Color.White);
+                //draw two times, one for shadow
+                batch.DrawString(font, text, position+new Vector2(size.X/2-50,size.Y/2-10), Color.Black);
+                batch.DrawString(font, text, position + new Vector2(size.X / 2 - 48, size.Y / 2 - 12), Color.White);
             }
             base.draw(batch);
         }
