@@ -76,6 +76,14 @@ namespace WinFormsGraphicsDevice
                     children[i].draw(batch);
                 }
             }
+            if (parent != null)
+            {
+                absolutePosition = parent.getPosition() + position;
+            }
+            else
+            {
+                absolutePosition = position;
+            }
         }
 
 

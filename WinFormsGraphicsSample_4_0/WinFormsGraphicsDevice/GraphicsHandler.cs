@@ -39,6 +39,7 @@ namespace WinFormsGraphicsDevice
         ContentManager Content;
         UIWindow weatherWindow;
         UIButton weatherButton;
+        UIButton calenderButton;
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -69,8 +70,10 @@ namespace WinFormsGraphicsDevice
             weatherWindow = uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
             weatherWindow.setVisible(false);
             String w = "Weather";
+            String b = "Calender";
             weatherButton = uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w, font);
-            uiManager.addStaticText(new Vector2(20,20), new Vector2(200,200), w, font, weatherWindow);
+            calenderButton = uiManager.addButton(new Vector2(20, 80), new Vector2(200, 40), b, font);
+            uiManager.addStaticText(new Vector2(0,0), new Vector2(200,200), w, font, weatherWindow);
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)
@@ -101,6 +104,8 @@ namespace WinFormsGraphicsDevice
             {
                 weatherWindow.setVisible(true);
             }
+            else
+                weatherWindow.setVisible(false);
             
         }
     }
