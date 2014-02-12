@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="UIButton.cs" />
     <Compile Include="UIElement.cs" />
+    <Compile Include="UIGraph.cs" />
     <Compile Include="UIImage.cs" />
     <Compile Include="UIManager.cs" />
     <Compile Include="UIStaticText.cs" />

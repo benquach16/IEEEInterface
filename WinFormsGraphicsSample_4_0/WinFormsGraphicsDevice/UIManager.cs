@@ -73,6 +73,14 @@ namespace WinFormsGraphicsDevice
             }
             return ret;
         }
-
+        public UIImage addImage(Vector2 position, Texture2D image, UIElement parent = null)
+        {
+            UIImage ret = new UIImage(graphicsDevice, position, image, parent);
+            if (parent == null)
+            {
+                unparentedNodes.Add(ret);
+            }
+            return ret;
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace WinFormsGraphicsDevice
             UI_WINDOW,
             UI_STATIC_TEXT,
             UI_IMAGE,
+            UI_GRAPH,
             UI_EMPTY
         };
         //setup class hierarchy

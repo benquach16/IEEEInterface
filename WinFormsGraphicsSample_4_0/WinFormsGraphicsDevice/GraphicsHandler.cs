@@ -39,7 +39,7 @@ namespace WinFormsGraphicsDevice
         ContentManager Content;
         UIWindow weatherWindow;
         UIButton weatherButton;
-        UIButton calenderButton;
+        UIButton infoButton;
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -70,9 +70,9 @@ namespace WinFormsGraphicsDevice
             weatherWindow = uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
             weatherWindow.setVisible(false);
             String w = "Weather";
-            String b = "Calender";
+            String b = "Information";
             weatherButton = uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w, font);
-            calenderButton = uiManager.addButton(new Vector2(20, 80), new Vector2(200, 40), b, font);
+            infoButton = uiManager.addButton(new Vector2(20, 80), new Vector2(200, 40), b, font);
             uiManager.addStaticText(new Vector2(0,0), new Vector2(200,200), w, font, weatherWindow);
         }
 
@@ -96,6 +96,7 @@ namespace WinFormsGraphicsDevice
             // Draw the triangle.
             spriteBatch.Begin();
             //draw cool background first
+            //!!MAKE SURE THAT WE ASSIGN THE RECT TO 2560x2048!!
             spriteBatch.Draw(bkg, new Rectangle(0, 0, 1366, 768), Color.White);
             uiManager.drawAll(spriteBatch);
             spriteBatch.End();
