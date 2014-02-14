@@ -63,17 +63,18 @@ namespace WinFormsGraphicsDevice
             ServiceContainer services = new ServiceContainer();
             Content = new ContentManager(Services, "Content");
             bkg = Content.Load<Texture2D>("bkg");
+            Texture2D t = Content.Load<Texture2D>("test");
             //TODO: REPLACE THIS WITH NON SHITTY FONT
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
 
             uiManager = new UIManager(GraphicsDevice);
-            weatherWindow = uiManager.addWindow(new Vector2(400, 20), new Vector2(600, 400));
+            weatherWindow = uiManager.addWindow(new Vector2(600, 20), new Vector2(600, 400));
             weatherWindow.setVisible(false);
-            String w = "Weather";
-            String b = "Information";
-            weatherButton = uiManager.addButton(new Vector2(20, 20), new Vector2(200, 40), w, font);
-            infoButton = uiManager.addButton(new Vector2(20, 80), new Vector2(200, 40), b, font);
-            uiManager.addStaticText(new Vector2(0,0), new Vector2(200,200), w, font, weatherWindow);
+
+            weatherButton = uiManager.addButton(new Vector2(20, 20), new Vector2(400, 80), "Weather", font);
+            infoButton = uiManager.addButton(new Vector2(20, 160), new Vector2(400, 80), "Information", font);
+            uiManager.addStaticText(new Vector2(0,0), new Vector2(200,200), "Weather", font, weatherWindow);
+            uiManager.addImage(new Vector2(20, 20), t, weatherWindow);
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)

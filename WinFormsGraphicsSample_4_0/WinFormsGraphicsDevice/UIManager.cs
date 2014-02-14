@@ -54,7 +54,7 @@ namespace WinFormsGraphicsDevice
             return ret;
         }
         //adds a button to the scene
-        public UIButton addButton(Vector2 position, Vector2 size, String text, SpriteFont font, UIElement parent = null)
+        public UIButton addButton(Vector2 position, Vector2 size, string text, SpriteFont font, UIElement parent = null)
         {
             UIButton ret = new UIButton(graphicsDevice, position, size, text, font, parent);
             if (parent == null)

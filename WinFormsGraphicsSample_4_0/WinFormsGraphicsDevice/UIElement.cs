@@ -66,6 +66,7 @@ namespace WinFormsGraphicsDevice
             }
             //do garbage collection
             GC.Collect();
+            children.TrimExcess();
         }
         public virtual void draw(SpriteBatch batch)
         {

@@ -21,6 +21,7 @@ namespace WinFormsGraphicsDevice
            
         }
 
+
         public override void draw(SpriteBatch batch)
         {
             //draw the image with the spritebatch

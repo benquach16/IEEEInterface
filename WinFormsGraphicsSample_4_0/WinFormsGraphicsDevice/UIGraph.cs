@@ -11,10 +11,11 @@ namespace WinFormsGraphicsDevice
     class UIGraph : UIElement
     {
         protected Texture2D bkg;
-        public UIGraph(Vector2 position, Vector2 size, UIElement parent)
+        public UIGraph(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, UIElement parent)
             : base(position, size, parent, E_UI_TYPES.UI_GRAPH)
         {
-            
+            this.bkg = new Texture2D(graphicsDevice, (int)size.X, (int)size.Y, false, SurfaceFormat.Color);
+
         }
 
         public override void draw(SpriteBatch batch)
