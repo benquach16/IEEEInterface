@@ -40,6 +40,8 @@ namespace WinFormsGraphicsDevice
         UIWindow weatherWindow;
         UIButton weatherButton;
         UIButton infoButton;
+        UIWindow infoWindow;
+        UIGraph weatherGraph;
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -70,7 +72,8 @@ namespace WinFormsGraphicsDevice
             uiManager = new UIManager(GraphicsDevice);
             weatherWindow = uiManager.addWindow(new Vector2(600, 20), new Vector2(600, 400));
             weatherWindow.setVisible(false);
-
+            infoWindow = uiManager.addWindow(new Vector2(600, 20), new Vector2(600, 400));
+            infoWindow.setVisible(false);
             weatherButton = uiManager.addButton(new Vector2(20, 20), new Vector2(400, 80), "Weather", font);
             infoButton = uiManager.addButton(new Vector2(20, 160), new Vector2(400, 80), "Information", font);
             uiManager.addStaticText(new Vector2(0,0), new Vector2(200,200), "Weather", font, weatherWindow);
@@ -108,7 +111,13 @@ namespace WinFormsGraphicsDevice
             }
             else
                 weatherWindow.setVisible(false);
-            
+
+            if (infoButton.getMouseOver())
+            {
+                infoWindow.setVisible(true);
+            }
+            else
+                infoWindow.setVisible(false);
         }
     }
 }

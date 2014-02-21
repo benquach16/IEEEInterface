@@ -2,7 +2,7 @@
 <XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
   <Asset Type="Graphics:FontDescription">
     <FontName>Astrolyte</FontName>
-    <Size>11</Size>
+    <Size>16</Size>
     <Spacing>0</Spacing>
     <UseKerning>true</UseKerning>
     <Style>Regular</Style>

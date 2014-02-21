@@ -54,9 +54,9 @@ namespace WinFormsGraphicsDevice
                 //draw two times, one for shadow
                 //make sure we can center the text
                 batch.DrawString(font, text, absolutePosition + new Vector2(size.X/2 - (font.MeasureString(text).X/2),
-                    size.Y/2-10), Color.Black);
+                    size.Y/2-(font.MeasureString(text).Y/2)), Color.Black);
                 batch.DrawString(font, text, absolutePosition + new Vector2(size.X/2 +2 - (font.MeasureString(text).X/2), 
-                    size.Y / 2 - 12), Color.White);
+                    size.Y / 2 -2-(font.MeasureString(text).Y/2)), Color.White);
             }
             base.draw(batch);
         }
