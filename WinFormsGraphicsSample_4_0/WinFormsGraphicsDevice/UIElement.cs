@@ -17,6 +17,7 @@ namespace WinFormsGraphicsDevice
             UI_WINDOW,
             UI_STATIC_TEXT,
             UI_IMAGE,
+            UI_ANIMATION,
             UI_GRAPH,
             UI_EMPTY
         };
@@ -26,6 +27,8 @@ namespace WinFormsGraphicsDevice
         protected Vector2 size;
         protected E_UI_TYPES type;
         protected bool visible;
+        protected float alpha;
+        protected int transitionTimer;
 
         protected UIElement parent;
         protected List<UIElement> children;
@@ -33,8 +36,28 @@ namespace WinFormsGraphicsDevice
         //base function
         public UIElement(Vector2 position, Vector2 size, UIElement parent, E_UI_TYPES type)
         {
+            this.transitionTimer = 0;
             this.position = position;
             this.size = size;
+            this.type = type;
+            this.visible = true;
+            this.parent = parent;
+            this.children = new List<UIElement>();
+            //yay for c++ design pattersn
+            if (parent != null)
+            {
+                parent.addChild(this);
+                absolutePosition = parent.getPosition() + position;
+            }
+            else
+            {
+                absolutePosition = position;
+            }
+        }
+        //overload the constructor
+        public UIElement(Vector2 position, UIElement parent, E_UI_TYPES type)
+        {
+            this.position = position;
             this.type = type;
             this.visible = true;
             this.parent = parent;
@@ -85,6 +108,17 @@ namespace WinFormsGraphicsDevice
             else
             {
                 absolutePosition = position;
+            }
+        }
+        //function that allows our slides to move out of the way gracefullyt
+        public void transition(bool moveLeft = true)
+        {
+            if (moveLeft)
+            {
+                //slide off to the left
+                Vector2 nPosition = position;
+                nPosition.X -= 5+(float)Math.Cos(position.X + 5);
+                position = nPosition;
             }
         }
 

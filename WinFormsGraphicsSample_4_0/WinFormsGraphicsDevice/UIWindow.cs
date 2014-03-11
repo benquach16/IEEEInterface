@@ -13,7 +13,6 @@ namespace WinFormsGraphicsDevice
         protected Texture2D winTex;
         protected Texture2D glass;
         protected Color color;
-        protected float alpha;
         //inheritance
         public UIWindow(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, UIElement parent = null) : 
             base(position, size, parent, E_UI_TYPES.UI_WINDOW)
@@ -41,7 +40,7 @@ namespace WinFormsGraphicsDevice
                 }
             }
             winTex.SetData<Color>(colorData);
-
+            //temporary
             this.alpha = 0.3f;
         }
         //this is probably deprecated
