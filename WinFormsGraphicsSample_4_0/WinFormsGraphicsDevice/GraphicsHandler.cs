@@ -34,6 +34,12 @@ namespace WinFormsGraphicsDevice
     /// </summary>
     class GraphicsHandler : GraphicsDeviceControl
     {
+        //global variables
+        const int WINDOWX = 1366;
+        const int WINDOWY = 768;
+        const int SIDEBARX = 300;
+        const int WINDOWDIFF = 4;
+
         //initialize some varaibles here
         bool sweptRight;
         bool sweptLeft;
@@ -46,8 +52,11 @@ namespace WinFormsGraphicsDevice
         Texture2D bkg;
         UIManager uiManager;
         ContentManager Content;
+        UIWindow sidebar;
         UIWindow weatherWindow;
         UIWindow infoWindow;
+        UIWindow humidityWindow;
+        UIWindow windWindow;
         UIGraph weatherGraph;
         
 
@@ -63,7 +72,7 @@ namespace WinFormsGraphicsDevice
             this.sweptRight = false;
             this.takingInput = false;
             this.oldX = 0;
-            this.currentSlide = 0;
+
             effect = new BasicEffect(GraphicsDevice);
             slides = new List<UIElement>();
             effect.VertexColorEnabled = true;
@@ -87,14 +96,30 @@ namespace WinFormsGraphicsDevice
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
 
             uiManager = new UIManager(GraphicsDevice);
-            weatherWindow = uiManager.addWindow(new Vector2(10, 10), new Vector2(1000, 600));
+
+            infoWindow = uiManager.addWindow(new Vector2(0, 0), new Vector2(1366, 768));
+            //use windowdiff as offset
+            weatherWindow = uiManager.addWindow(new Vector2(WINDOWX+WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
+            humidityWindow = uiManager.addWindow(new Vector2((WINDOWX * 2) + WINDOWDIFF*2, 0), new Vector2(WINDOWX, WINDOWY));
+            windWindow = uiManager.addWindow(new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
+
+            slides.Add(windWindow);
+            slides.Add(humidityWindow);
             slides.Add(weatherWindow);
-
-            infoWindow = uiManager.addWindow(new Vector2(1010, 10), new Vector2(1000, 600));
             slides.Add(infoWindow);
+            sidebar = uiManager.addWindow(new Vector2(1066, 0), new Vector2(SIDEBARX, WINDOWY));
+            uiManager.addButton(new Vector2(10, 300), new Vector2(280, 60), "Frogger", font, sidebar);
+            uiManager.addButton(new Vector2(10, 400), new Vector2(280, 60), "Pong", font, sidebar);
+            
+            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "UCR Information", font, infoWindow);
+            uiManager.addStaticText(new Vector2(20, 60), new Vector2(400, 400), "Information about UCR goes here", font, infoWindow);
+            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200,200), "Weather - Tempurature", font, weatherWindow);
+            uiManager.addStaticText(new Vector2(10, 90), new Vector2(200, 200), "666 C", font, weatherWindow);
+            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
+            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
+            uiManager.addGraph(new Vector2(20, 50), new Vector2(700, 700), windWindow);
 
-            uiManager.addStaticText(new Vector2(0,0), new Vector2(200,200), "Weather", font, weatherWindow);
-            uiManager.addImage(new Vector2(20, 20), t, weatherWindow);
+            this.currentSlide = slides.Count - 1 ;
         }
 
         private void GH_MouseMove(object sender, MouseEventArgs e)
@@ -133,7 +158,8 @@ namespace WinFormsGraphicsDevice
             tempY = MainForm.mY;
 
             //do this over a period of time
-                doLeftSwipe();
+            doSwipes();
+            //setSlidePositions();
 
         }
         //shift all slides over
@@ -145,69 +171,96 @@ namespace WinFormsGraphicsDevice
         }
         protected void incrementSlide()
         {
-            if (currentSlide < slides.Count-1)
+            if (currentSlide < slides.Count)
                 currentSlide++;
         }
 
-        public bool getLeftSwipe()
+        protected void doSwipes()
         {
-            //this gun be a slight pain
-            //record for 1 second
-            return sweptLeft;
-        }
-        public bool getRightSwipe()
-        {
-            return sweptRight;
-        }
-        protected void doRightSwipe()
-        {
-            if (getRightSwipe())
+            //set a timer here
+            timer.Start();
+            if (!takingInput)
             {
-
+                oldX = MainForm.mX;
+                takingInput = true;
             }
-        }
-        protected void doLeftSwipe()
-        {
-            if (getLeftSwipe())
+            if (timer.ElapsedMilliseconds > 100)
             {
-                timer.Start();
-                if (timer.ElapsedMilliseconds < 500)
+                //check for left or right 
+                if ((oldX - MainForm.mX) > 500)
                 {
-                    //all slides need to transition
-                    for(int i = 0; i < slides.Count; i++)
-                        slides[i].transition();
-                }
-                else
-                {
-                    incrementSlide();
-                    timer.Reset();
-                    sweptLeft = false;
-                }
-            }
-            else
-            {
-                //find right to left movement
-                timer.Start();
-                if (timer.ElapsedMilliseconds < 500)
-                {
-                    if (!this.takingInput)
-                    {
-                        this.oldX = MainForm.mX;
-                        this.takingInput = true;
-                    }
+                    //swept to the left
 
-                }
-                else
-                {
-                    if ((this.oldX - MainForm.mX) > 50)
+                    if (currentSlide > 0)
                     {
+                        currentSlide--;
                         sweptLeft = true;
                     }
-                    timer.Reset();
-                    this.takingInput = false;
+                }
+                else if ((oldX - MainForm.mX) < -500)
+                {
+                    //swept to the right
+
+                    if (currentSlide < slides.Count - 1)
+                    {
+                        currentSlide++;
+                        sweptRight = true;
+                    }
                     
                 }
+                timer.Reset();
+                takingInput = false;
+            }
 
+            if (sweptLeft)
+            {
+                for (int i = 0; i < slides.Count; i++)
+                {
+                    if (!slides[i].stopTransition())
+                        slides[i].transition();
+                    else
+                    {
+                        //end everything here
+                        slides[i].resetTransition();
+                        sweptLeft = false;
+                        setSlidePositions();
+                    }
+                }
+            }
+            else if (sweptRight)
+            {
+                for (int i = 0; i < slides.Count; i++)
+                {
+                    if (!slides[i].stopTransition())
+                        slides[i].transition(false);
+                    else
+                    {
+                        slides[i].resetTransition();
+                        sweptRight = false;
+                        setSlidePositions();
+                    }
+                }
+            }
+        }
+
+        //here we artificially set the slides to their correct positions in case of transition lag
+        protected void setSlidePositions()
+        {
+            /*
+            slides[currentSlide].setPosition(new Vector2(0, 0));
+            //all slides after
+            for (int i = currentSlide-1; i >= 0; i--)
+            {
+                //take into account if i is 0
+                slides[i].setPosition(new Vector2((currentSlide-i)* 1366, 0));
+            }
+            for (int i = currentSlide+1; i < slides.Count; i++)
+            {
+                slides[i].setPosition(new Vector2((currentSlide-i)* 1366, 0));
+            }*/
+            for (int i = 0; i < slides.Count; i++)
+            {
+                slides[i].setPosition(new Vector2((currentSlide - i) * 1366, 0));
             }
         }
     }

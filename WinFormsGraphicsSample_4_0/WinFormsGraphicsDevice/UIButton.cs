@@ -50,7 +50,7 @@ namespace WinFormsGraphicsDevice
             if (visible)
             {
                 //draw this
-                batch.Draw(butTex, position, Color.White * alpha);
+                batch.Draw(butTex, absolutePosition, Color.White * alpha);
                 //draw two times, one for shadow
                 //make sure we can center the text
                 batch.DrawString(font, text, absolutePosition + new Vector2(size.X/2 - (font.MeasureString(text).X/2),

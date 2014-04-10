@@ -33,6 +33,11 @@ namespace WinFormsGraphicsDevice
         protected UIElement parent;
         protected List<UIElement> children;
 
+        //for transitions
+        protected bool moved;
+        protected bool stop;
+        protected float oldX;
+
         //base function
         public UIElement(Vector2 position, Vector2 size, UIElement parent, E_UI_TYPES type)
         {
@@ -42,6 +47,8 @@ namespace WinFormsGraphicsDevice
             this.type = type;
             this.visible = true;
             this.parent = parent;
+            this.moved = false;
+            this.stop = false;
             this.children = new List<UIElement>();
             //yay for c++ design pattersn
             if (parent != null)
@@ -111,15 +118,46 @@ namespace WinFormsGraphicsDevice
             }
         }
         //function that allows our slides to move out of the way gracefullyt
+        //also only make it move by its size
         public void transition(bool moveLeft = true)
         {
-            if (moveLeft)
+            if (!moved)
+            {
+                oldX = position.X;
+                moved = true;
+            }
+            if (moveLeft && moved)
             {
                 //slide off to the left
                 Vector2 nPosition = position;
-                nPosition.X -= 5+(float)Math.Cos(position.X + 5);
+                nPosition.X -= 10;
                 position = nPosition;
+                if (position.X < (oldX - size.X))
+                {
+                    moved = false;
+                    stop = true;
+                }
             }
+            else if (!moveLeft && moved)
+            {
+                //slide off to the right
+                Vector2 nPosition = position;
+                nPosition.X += 10;
+                position = nPosition;
+                if (position.X > (oldX + size.X))
+                {
+                    moved = false;
+                    stop = true;
+                }
+            }
+        }
+        public bool stopTransition()
+        {
+            return stop;
+        }
+        public void resetTransition()
+        {
+            stop = false;
         }
 
 

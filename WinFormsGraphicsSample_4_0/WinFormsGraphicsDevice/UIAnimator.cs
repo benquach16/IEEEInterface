@@ -12,19 +12,18 @@ namespace WinFormsGraphicsDevice
     {
         //image swapping class or gif playing class designed for ui animations
         //GIFS REQUIRE A LIBRARY SO WE GO HARD
-        //images should be named a certain way
-        //like image[i]
-        protected int numImages;
-        protected int animLength;
+        //images should be loaded into a list
         protected int currentImage;
-        Texture2D currentTexture;
+        
+        List<Texture2D> textureList;
         GraphicsDevice device;
-        public UIAnimator(GraphicsDevice device, Vector2 position, Texture2D image, int numImages, UIElement parent = null) :
-            base(position, new Vector2(image.Bounds.Width, image.Bounds.Height), parent, E_UI_TYPES.UI_ANIMATION)
+        public UIAnimator(GraphicsDevice device, Vector2 position, List<Texture2D> textureList, UIElement parent = null) :
+            base(position, new Vector2(0, 0), parent, E_UI_TYPES.UI_ANIMATION)
         {
-            currentTexture = image;
+            this.textureList = textureList;
             currentImage = 0;
             this.device = device;
+            this.size = new Vector2(textureList[0].Bounds.Width, textureList[0].Bounds.Height);
         }
         ~UIAnimator()
         {
@@ -33,10 +32,13 @@ namespace WinFormsGraphicsDevice
         public override void  draw(SpriteBatch batch)
         {
             //lets do the image flipping here
-            batch.Draw(currentTexture, position, Color.White);
-            currentImage++;
+            batch.Draw(textureList[currentImage], absolutePosition, Color.White);
             //get the next image and set it
-            
+            //probably need to set like a timer
+            if (currentImage < textureList.Count)
+                currentImage++;
+            else
+                currentImage = 0;
             //reload the image
  	        base.draw(batch);
         }
