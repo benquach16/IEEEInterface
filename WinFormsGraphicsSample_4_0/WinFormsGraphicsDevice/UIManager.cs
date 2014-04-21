@@ -25,11 +25,7 @@ namespace WinFormsGraphicsDevice
         //destructor
         ~UIManager()
         {
-            for (int i = 0; i < unparentedNodes.Count; i++)
-            {
-                //kill
-                unparentedNodes[i] = null;
-            }
+            unparentedNodes.Clear();
             GC.Collect();
         }
         public void drawAll(SpriteBatch batch)
@@ -87,6 +83,14 @@ namespace WinFormsGraphicsDevice
             UIGraph ret = new UIGraph(graphicsDevice, position, size, parent);
             if (parent == null)
                 unparentedNodes.Add(ret);
+            return ret;
+        }
+
+        //for individual slides
+        public SlideInfo createInfoSlide(Vector2 position, Vector2 size)
+        {
+            SlideInfo ret = new SlideInfo(graphicsDevice,this, position, size);
+            unparentedNodes.Add(ret);
             return ret;
         }
     }

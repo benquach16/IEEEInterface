@@ -40,5 +40,9 @@ namespace WinFormsGraphicsDevice
         {
             scale = newScale;
         }
+        public void setImage(Texture2D image)
+        {
+            this.image = image;
+        }
     }
 }

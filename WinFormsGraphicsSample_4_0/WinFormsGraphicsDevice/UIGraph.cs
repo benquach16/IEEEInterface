@@ -37,9 +37,9 @@ namespace WinFormsGraphicsDevice
                 }
                 else
                 {
-                    //int texColour = (i / (2000));
-                    int texColor = 64;
-                    colorData[i] = new Color(texColor, texColor, texColor, 0);
+                    //int texColor = 255-(i / (2000));
+                    int texColor = 32;
+                    colorData[i] = new Color(texColor, texColor, texColor, 64);
                 }
             }
             bkg.SetData(colorData);
@@ -52,19 +52,27 @@ namespace WinFormsGraphicsDevice
             //for now, just draw like a box
             if (visible)
             {
+                //draw lines for scaling?
                 batch.Draw(bkg, absolutePosition, Color.White);
+                
                 //and draw the lines
                 for (int i = 0; i < values.Count; i++)
                 {
                     Vector2 pos1 = getVectorFromPoint(i, values[i]);
+                    //we need to drawa up to the edge
                     if (i < values.Count - 1)
                     {
                         //if there is a next point
                         //we can draw a line between 'this' and the next one
                         Vector2 pos2 = getVectorFromPoint(i + 1, values[i + 1]);
-
+                        if (pos2.X < size.X + absolutePosition.X)
+                            drawLine(batch, pos1, pos2);
                     }
                     
+                }
+                if (values.Count > 200)
+                {
+                    values.RemoveAt(1);
                 }
             }
             base.draw(batch);
@@ -99,7 +107,7 @@ namespace WinFormsGraphicsDevice
         {
             //aight so the purpose of this fnction is to
             //ensure that the vector2 created from this value fits in the graph and isnt autistic
-            Vector2 ret = new Vector2(index, value);
+            Vector2 ret = new Vector2(absolutePosition.X+(index*4), absolutePosition.Y+size.Y-value);
             return ret;
         }
     }

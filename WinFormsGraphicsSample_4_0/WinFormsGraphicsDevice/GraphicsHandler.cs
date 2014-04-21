@@ -58,8 +58,19 @@ namespace WinFormsGraphicsDevice
         UIWindow humidityWindow;
         UIWindow windWindow;
         UIGraph weatherGraph;
-        
+        UIImage weatherImage;
 
+        //for weather
+
+        enum E_WEATHER_STATES
+        {
+            WEATHER_CLOUDY,
+            WEATHER_SUNNY,
+            WEATHER_DRIZZLE,
+            WEATHER_THUNDERSTORMS,
+            WEATHER_RAIN
+        };
+        E_WEATHER_STATES weatherState;
         int currentSlide;
         List<UIElement> slides;
         /// <summary>
@@ -72,7 +83,7 @@ namespace WinFormsGraphicsDevice
             this.sweptRight = false;
             this.takingInput = false;
             this.oldX = 0;
-
+            weatherState = E_WEATHER_STATES.WEATHER_RAIN;
             effect = new BasicEffect(GraphicsDevice);
             slides = new List<UIElement>();
             effect.VertexColorEnabled = true;
@@ -94,6 +105,7 @@ namespace WinFormsGraphicsDevice
             
             //TODO: REPLACE THIS WITH NON SHITTY FONT
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
+            SpriteFont small = Content.Load<SpriteFont>("smallFont");
 
             uiManager = new UIManager(GraphicsDevice);
 
@@ -102,22 +114,25 @@ namespace WinFormsGraphicsDevice
             weatherWindow = uiManager.addWindow(new Vector2(WINDOWX+WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
             humidityWindow = uiManager.addWindow(new Vector2((WINDOWX * 2) + WINDOWDIFF*2, 0), new Vector2(WINDOWX, WINDOWY));
             windWindow = uiManager.addWindow(new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
-
+            //SlideInfo tmp = uiManager.createInfoSlide(new Vector2(0, 0), new Vector2(1366, 768));
             slides.Add(windWindow);
             slides.Add(humidityWindow);
             slides.Add(weatherWindow);
             slides.Add(infoWindow);
+            //slides.Add(tmp);
             sidebar = uiManager.addWindow(new Vector2(1066, 0), new Vector2(SIDEBARX, WINDOWY));
             uiManager.addButton(new Vector2(10, 300), new Vector2(280, 60), "Frogger", font, sidebar);
             uiManager.addButton(new Vector2(10, 400), new Vector2(280, 60), "Pong", font, sidebar);
             
             uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "UCR Information", font, infoWindow);
-            uiManager.addStaticText(new Vector2(20, 60), new Vector2(400, 400), "Information about UCR goes here", font, infoWindow);
+            uiManager.addStaticText(new Vector2(20, 60), new Vector2(400, 400), "Information about UCR goes here", small, infoWindow);
             uiManager.addStaticText(new Vector2(0, 0), new Vector2(200,200), "Weather - Tempurature", font, weatherWindow);
+            weatherImage = uiManager.addImage(new Vector2(100, 20), Content.Load<Texture2D>("Cloudy"), weatherWindow);
             uiManager.addStaticText(new Vector2(10, 90), new Vector2(200, 200), "666 C", font, weatherWindow);
             uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
             uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
-            uiManager.addGraph(new Vector2(20, 50), new Vector2(700, 700), windWindow);
+            uiManager.addStaticText(new Vector2(20, 50), new Vector2(200, 200), "420 MPH", small, windWindow);
+            weatherGraph = uiManager.addGraph(new Vector2(20,100), new Vector2(700, 650), windWindow);
 
             this.currentSlide = slides.Count - 1 ;
         }
@@ -141,8 +156,11 @@ namespace WinFormsGraphicsDevice
             // Set renderstates.
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
             updateSwipes();
+            setWeatherPictures();
             spriteBatch.Begin();
+            Random r = new Random();
             
+            weatherGraph.update(r.Next()%200);
             //draw cool background first
             //!!MAKE SURE THAT WE ASSIGN THE RECT TO 2560x2048!!
             spriteBatch.Draw(bkg, new Rectangle(0, 0, 1366, 768), Color.White);
@@ -184,7 +202,7 @@ namespace WinFormsGraphicsDevice
                 oldX = MainForm.mX;
                 takingInput = true;
             }
-            if (timer.ElapsedMilliseconds > 100)
+            if (timer.ElapsedMilliseconds > 20 && !sweptLeft && !sweptRight)
             {
                 //check for left or right 
                 if ((oldX - MainForm.mX) > 500)
@@ -214,8 +232,10 @@ namespace WinFormsGraphicsDevice
 
             if (sweptLeft)
             {
+
                 for (int i = 0; i < slides.Count; i++)
                 {
+                sweptRight = false;
                     if (!slides[i].stopTransition())
                         slides[i].transition();
                     else
@@ -229,8 +249,10 @@ namespace WinFormsGraphicsDevice
             }
             else if (sweptRight)
             {
+
                 for (int i = 0; i < slides.Count; i++)
                 {
+                sweptLeft = false;
                     if (!slides[i].stopTransition())
                         slides[i].transition(false);
                     else
@@ -246,22 +268,44 @@ namespace WinFormsGraphicsDevice
         //here we artificially set the slides to their correct positions in case of transition lag
         protected void setSlidePositions()
         {
-            /*
-            slides[currentSlide].setPosition(new Vector2(0, 0));
-            //all slides after
-            for (int i = currentSlide-1; i >= 0; i--)
-            {
-                //take into account if i is 0
-                slides[i].setPosition(new Vector2((currentSlide-i)* 1366, 0));
-            }
-            for (int i = currentSlide+1; i < slides.Count; i++)
-            {
-                slides[i].setPosition(new Vector2((currentSlide-i)* 1366, 0));
-            }*/
             for (int i = 0; i < slides.Count; i++)
             {
                 slides[i].setPosition(new Vector2((currentSlide - i) * 1366, 0));
             }
+        }
+
+        //handle the changing of icons for weataher here
+        protected void setWeatherPictures()
+        {
+            switch(weatherState)
+            {
+                case E_WEATHER_STATES.WEATHER_CLOUDY:
+                {
+                    weatherImage.setImage(Content.Load<Texture2D>("Cloudy"));
+                    break;
+                }
+                case E_WEATHER_STATES.WEATHER_DRIZZLE:
+                {
+                    weatherImage.setImage(Content.Load<Texture2D>("Slight Drizzle"));
+                    break;
+                }
+                case E_WEATHER_STATES.WEATHER_RAIN:
+                {
+                    weatherImage.setImage(Content.Load<Texture2D>("Drizzle"));
+                    break;
+                }
+                case E_WEATHER_STATES.WEATHER_SUNNY:
+                {
+                    weatherImage.setImage(Content.Load<Texture2D>("Sunny"));
+                    break;
+                }
+                case E_WEATHER_STATES.WEATHER_THUNDERSTORMS:
+                {
+                    weatherImage.setImage(Content.Load<Texture2D>("Thunderstorms"));
+                    break;
+                }
+            }
+
         }
     }
 }
