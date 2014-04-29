@@ -43,11 +43,15 @@ namespace WinFormsGraphicsDevice
         //initialize some varaibles here
         bool sweptRight;
         bool sweptLeft;
+        bool transitioning;
         bool takingInput;
+        bool pongPressed;
+        bool froggerPressed;
         int oldX;
         
         BasicEffect effect;
         Stopwatch timer;
+        Stopwatch timer2;
         SpriteBatch spriteBatch;
         Texture2D bkg;
         UIManager uiManager;
@@ -57,8 +61,11 @@ namespace WinFormsGraphicsDevice
         UIWindow infoWindow;
         UIWindow humidityWindow;
         UIWindow windWindow;
+        UIButton pongButton;
+        UIButton froggerButton;
         UIGraph weatherGraph;
         UIImage weatherImage;
+        Background backGrnd;
 
         //for weather
 
@@ -82,6 +89,9 @@ namespace WinFormsGraphicsDevice
             this.sweptLeft = false;
             this.sweptRight = false;
             this.takingInput = false;
+            this.transitioning = false;
+            this.froggerPressed = false;
+            this.pongPressed = false;
             this.oldX = 0;
             weatherState = E_WEATHER_STATES.WEATHER_RAIN;
             effect = new BasicEffect(GraphicsDevice);
@@ -90,6 +100,7 @@ namespace WinFormsGraphicsDevice
 
             // Start the animation timer.
             timer = Stopwatch.StartNew();
+            timer2 = Stopwatch.StartNew();
 
             // Hook the idle event to constantly redraw our animation.
             Application.Idle += delegate { Invalidate(); };
@@ -101,6 +112,8 @@ namespace WinFormsGraphicsDevice
             ServiceContainer services = new ServiceContainer();
             Content = new ContentManager(Services, "Content");
             bkg = Content.Load<Texture2D>("bkg");
+            Texture2D over = Content.Load<Texture2D>("overlay");
+            backGrnd = new Background(GraphicsDevice, bkg, over);
             Texture2D t = Content.Load<Texture2D>("test");
             
             //TODO: REPLACE THIS WITH NON SHITTY FONT
@@ -121,8 +134,8 @@ namespace WinFormsGraphicsDevice
             slides.Add(infoWindow);
             //slides.Add(tmp);
             sidebar = uiManager.addWindow(new Vector2(1066, 0), new Vector2(SIDEBARX, WINDOWY));
-            uiManager.addButton(new Vector2(10, 300), new Vector2(280, 60), "Frogger", font, sidebar);
-            uiManager.addButton(new Vector2(10, 400), new Vector2(280, 60), "Pong", font, sidebar);
+            froggerButton = uiManager.addButton(new Vector2(10, 300), new Vector2(280, 60), "Frogger", font, sidebar);
+            pongButton = uiManager.addButton(new Vector2(10, 400), new Vector2(280, 60), "Pong", font, sidebar);
             
             uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "UCR Information", font, infoWindow);
             uiManager.addStaticText(new Vector2(20, 60), new Vector2(400, 400), "Information about UCR goes here", small, infoWindow);
@@ -132,7 +145,7 @@ namespace WinFormsGraphicsDevice
             uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
             uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
             uiManager.addStaticText(new Vector2(20, 50), new Vector2(200, 200), "420 MPH", small, windWindow);
-            weatherGraph = uiManager.addGraph(new Vector2(20,100), new Vector2(700, 650), windWindow);
+            weatherGraph = uiManager.addGraph(new Vector2(20,100), new Vector2(700, 650),small, windWindow);
 
             this.currentSlide = slides.Count - 1 ;
         }
@@ -157,16 +170,54 @@ namespace WinFormsGraphicsDevice
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
             updateSwipes();
             setWeatherPictures();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
+            backGrnd.run((int)slides[0].getPosition().X);
             Random r = new Random();
             
             weatherGraph.update(r.Next()%200);
             //draw cool background first
             //!!MAKE SURE THAT WE ASSIGN THE RECT TO 2560x2048!!
-            spriteBatch.Draw(bkg, new Rectangle(0, 0, 1366, 768), Color.White);
+            spriteBatch.Draw(bkg, new Rectangle(0, 0, WINDOWX, WINDOWY), Color.White);
+            //spriteBatch.Draw(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
+            backGrnd.draw(spriteBatch);
             uiManager.drawAll(spriteBatch);
             spriteBatch.End();
-
+            //handle buttons
+            if (froggerButton.getMouseOver())
+            {
+                //wait for a second
+                if (!froggerPressed)
+                {
+                    timer2.Start();
+                    froggerPressed = true;
+                }
+                else
+                {
+                    if (timer2.ElapsedMilliseconds > 1000)
+                    {
+                        //execute frogger
+                        timer2.Reset();
+                        froggerPressed = false;
+                    }
+                }
+            }
+            if (pongButton.getMouseOver())
+            {
+                //wait for a second
+                if (!pongPressed)
+                {
+                    timer2.Start();
+                    pongPressed = true;
+                }
+                else
+                {
+                    if (timer2.ElapsedMilliseconds > 1000)
+                    {
+                        timer2.Reset();
+                        pongPressed = false;
+                    }
+                }
+            }
         }
         protected void updateSwipes()
         {
@@ -185,12 +236,19 @@ namespace WinFormsGraphicsDevice
         {
             if (currentSlide > 0)
                 currentSlide--;
+            else
+            {
+                //play an effect to indicate that we hit the end of our slides
+            }
             
         }
         protected void incrementSlide()
         {
             if (currentSlide < slides.Count)
                 currentSlide++;
+            else
+            {
+            }
         }
 
         protected void doSwipes()
@@ -202,27 +260,29 @@ namespace WinFormsGraphicsDevice
                 oldX = MainForm.mX;
                 takingInput = true;
             }
-            if (timer.ElapsedMilliseconds > 20 && !sweptLeft && !sweptRight)
+            if (timer.ElapsedMilliseconds > 20 && !sweptLeft && !sweptRight && !transitioning)
             {
                 //check for left or right 
                 if ((oldX - MainForm.mX) > 500)
                 {
                     //swept to the left
-
+                    oldX = MainForm.mX;
                     if (currentSlide > 0)
                     {
                         currentSlide--;
                         sweptLeft = true;
+                        transitioning = true;
                     }
                 }
                 else if ((oldX - MainForm.mX) < -500)
                 {
                     //swept to the right
-
+                    oldX = MainForm.mX;
                     if (currentSlide < slides.Count - 1)
                     {
                         currentSlide++;
                         sweptRight = true;
+                        transitioning = true;
                     }
                     
                 }
@@ -230,12 +290,12 @@ namespace WinFormsGraphicsDevice
                 takingInput = false;
             }
 
-            if (sweptLeft)
+            if (sweptLeft && transitioning)
             {
 
                 for (int i = 0; i < slides.Count; i++)
                 {
-                sweptRight = false;
+                    sweptRight = false;
                     if (!slides[i].stopTransition())
                         slides[i].transition();
                     else
@@ -243,22 +303,26 @@ namespace WinFormsGraphicsDevice
                         //end everything here
                         slides[i].resetTransition();
                         sweptLeft = false;
+                        transitioning = false;
+                        oldX = MainForm.mX;
                         setSlidePositions();
                     }
                 }
             }
-            else if (sweptRight)
+            else if (sweptRight && transitioning)
             {
 
                 for (int i = 0; i < slides.Count; i++)
                 {
-                sweptLeft = false;
+                    sweptLeft = false;
                     if (!slides[i].stopTransition())
                         slides[i].transition(false);
                     else
                     {
                         slides[i].resetTransition();
                         sweptRight = false;
+                        transitioning = false;
+                        oldX = MainForm.mX;
                         setSlidePositions();
                     }
                 }

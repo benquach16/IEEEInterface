@@ -13,13 +13,15 @@ namespace WinFormsGraphicsDevice
         protected Texture2D bkg;
         protected int x, y;
         protected List<float> values;
+        protected SpriteFont font;
         //so we can filter down the graph
-        protected int maxValues;
+        protected float maxValue;
         protected Texture2D t;
-        public UIGraph(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, UIElement parent = null)
+        public UIGraph(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, SpriteFont font, UIElement parent = null)
             : base(position, size, parent, E_UI_TYPES.UI_GRAPH)
         {
             this.values = new List<float>();
+            this.font = font;
             this.bkg = new Texture2D(graphicsDevice, (int)size.X, (int)size.Y, false, SurfaceFormat.Color);
             Color[] colorData = new Color[(int)size.X * (int)size.Y];
 
@@ -54,17 +56,24 @@ namespace WinFormsGraphicsDevice
             {
                 //draw lines for scaling?
                 batch.Draw(bkg, absolutePosition, Color.White);
-                
+                batch.DrawString(font, "0", absolutePosition + new Vector2(0,size.Y), Color.White);
+                batch.DrawString(font, "0", absolutePosition + new Vector2(-30, size.Y-30), Color.White);
+                batch.DrawString(font, maxValue.ToString(), absolutePosition + new Vector2(-30, 0), Color.White);
                 //and draw the lines
                 for (int i = 0; i < values.Count; i++)
                 {
-                    Vector2 pos1 = getVectorFromPoint(i, values[i]);
+                    if (values[i] > maxValue)
+                        maxValue = values[i];
+                    float v = size.Y * ((float)values[i] / maxValue);
+                    Vector2 pos1 = getVectorFromPoint(i, v);
                     //we need to drawa up to the edge
                     if (i < values.Count - 1)
                     {
                         //if there is a next point
                         //we can draw a line between 'this' and the next one
-                        Vector2 pos2 = getVectorFromPoint(i + 1, values[i + 1]);
+
+                        float v2 = size.Y * ((float)values[i+1] / maxValue);
+                        Vector2 pos2 = getVectorFromPoint(i + 1, v2);
                         if (pos2.X < size.X + absolutePosition.X)
                             drawLine(batch, pos1, pos2);
                     }

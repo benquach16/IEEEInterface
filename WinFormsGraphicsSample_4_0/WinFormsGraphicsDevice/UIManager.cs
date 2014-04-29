@@ -78,9 +78,9 @@ namespace WinFormsGraphicsDevice
             }
             return ret;
         }
-        public UIGraph addGraph(Vector2 position, Vector2 size, UIElement parent = null)
+        public UIGraph addGraph(Vector2 position, Vector2 size, SpriteFont font, UIElement parent = null)
         {
-            UIGraph ret = new UIGraph(graphicsDevice, position, size, parent);
+            UIGraph ret = new UIGraph(graphicsDevice, position, size, font, parent);
             if (parent == null)
                 unparentedNodes.Add(ret);
             return ret;
