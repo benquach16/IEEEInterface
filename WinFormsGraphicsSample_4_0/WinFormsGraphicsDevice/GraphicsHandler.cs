@@ -35,8 +35,8 @@ namespace WinFormsGraphicsDevice
     class GraphicsHandler : GraphicsDeviceControl
     {
         //global variables
-        const int WINDOWX = 1366;
-        const int WINDOWY = 768;
+        const int WINDOWX = 2560;
+        const int WINDOWY = 2048;
         const int SIDEBARX = 300;
         const int WINDOWDIFF = 4;
 
@@ -122,7 +122,7 @@ namespace WinFormsGraphicsDevice
 
             uiManager = new UIManager(GraphicsDevice);
 
-            infoWindow = uiManager.addWindow(new Vector2(0, 0), new Vector2(1366, 768));
+            infoWindow = uiManager.addWindow(new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             //use windowdiff as offset
             weatherWindow = uiManager.addWindow(new Vector2(WINDOWX+WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
             humidityWindow = uiManager.addWindow(new Vector2((WINDOWX * 2) + WINDOWDIFF*2, 0), new Vector2(WINDOWX, WINDOWY));
@@ -133,7 +133,7 @@ namespace WinFormsGraphicsDevice
             slides.Add(weatherWindow);
             slides.Add(infoWindow);
             //slides.Add(tmp);
-            sidebar = uiManager.addWindow(new Vector2(1066, 0), new Vector2(SIDEBARX, WINDOWY));
+            sidebar = uiManager.addWindow(new Vector2(WINDOWX - SIDEBARX, 0), new Vector2(SIDEBARX, WINDOWY));
             froggerButton = uiManager.addButton(new Vector2(10, 300), new Vector2(280, 60), "Frogger", font, sidebar);
             pongButton = uiManager.addButton(new Vector2(10, 400), new Vector2(280, 60), "Pong", font, sidebar);
             
@@ -171,7 +171,7 @@ namespace WinFormsGraphicsDevice
             updateSwipes();
             setWeatherPictures();
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
-            backGrnd.run((int)slides[0].getPosition().X);
+            backGrnd.run((int)slides[slides.Count-1].getPosition().X);
             Random r = new Random();
             
             weatherGraph.update(r.Next()%200);

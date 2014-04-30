@@ -50,13 +50,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bkg.jpg">
-      <Name>bkg</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="test.jpg">
       <Name>test</Name>
       <Importer>TextureImporter</Importer>
@@ -118,6 +111,13 @@
   <ItemGroup>
     <Compile Include="overlay.png">
       <Name>overlay</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bkg.jpg">
+      <Name>bkg</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
