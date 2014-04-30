@@ -116,8 +116,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bkg.jpg">
+    <Compile Include="bkg.png">
       <Name>bkg</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Size32.spritefont">
+      <Name>Size32</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="clouds.png">
+      <Name>clouds</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

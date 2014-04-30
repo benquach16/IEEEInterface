@@ -74,8 +74,9 @@ namespace WinFormsGraphicsDevice
 
                         float v2 = size.Y * ((float)values[i+1] / maxValue);
                         Vector2 pos2 = getVectorFromPoint(i + 1, v2);
-                        if (pos2.X < size.X + absolutePosition.X)
+                        if (pos2.X < size.X + absolutePosition.X && pos2.Y < size.Y + absolutePosition.Y)
                             drawLine(batch, pos1, pos2);
+
                     }
                     
                 }
@@ -116,7 +117,7 @@ namespace WinFormsGraphicsDevice
         {
             //aight so the purpose of this fnction is to
             //ensure that the vector2 created from this value fits in the graph and isnt autistic
-            Vector2 ret = new Vector2(absolutePosition.X+(index*4), absolutePosition.Y+size.Y-value);
+            Vector2 ret = new Vector2(absolutePosition.X+(index*8), absolutePosition.Y+size.Y-value);
             return ret;
         }
     }

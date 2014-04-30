@@ -54,12 +54,12 @@ namespace WinFormsGraphicsDevice
         }
 
         //just stops the timer
-        public void stop()
+        public void stopAnim()
         {
             timer.Stop();
         }
 
-        public void start()
+        public void startAnim()
         {
             timer.Start();
         }

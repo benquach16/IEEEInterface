@@ -113,12 +113,14 @@ namespace WinFormsGraphicsDevice
             Content = new ContentManager(Services, "Content");
             bkg = Content.Load<Texture2D>("bkg");
             Texture2D over = Content.Load<Texture2D>("overlay");
-            backGrnd = new Background(GraphicsDevice, bkg, over);
+            Texture2D clouds = Content.Load<Texture2D>("clouds");
+            backGrnd = new Background(GraphicsDevice, bkg, over, clouds);
             Texture2D t = Content.Load<Texture2D>("test");
             
             //TODO: REPLACE THIS WITH NON SHITTY FONT
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
             SpriteFont small = Content.Load<SpriteFont>("smallFont");
+            SpriteFont fontSize32 = Content.Load<SpriteFont>("Size32");
 
             uiManager = new UIManager(GraphicsDevice);
 
@@ -137,15 +139,16 @@ namespace WinFormsGraphicsDevice
             froggerButton = uiManager.addButton(new Vector2(10, 300), new Vector2(280, 60), "Frogger", font, sidebar);
             pongButton = uiManager.addButton(new Vector2(10, 400), new Vector2(280, 60), "Pong", font, sidebar);
             
-            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "UCR Information", font, infoWindow);
-            uiManager.addStaticText(new Vector2(20, 60), new Vector2(400, 400), "Information about UCR goes here", small, infoWindow);
-            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200,200), "Weather - Tempurature", font, weatherWindow);
+            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "UCR Information", font, infoWindow);
+            uiManager.addStaticText(new Vector2(20, 160), new Vector2(400, 400), "Information about UCR goes here", small, infoWindow);
+            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200,200), "Weather - Tempurature", font, weatherWindow);
             weatherImage = uiManager.addImage(new Vector2(100, 20), Content.Load<Texture2D>("Cloudy"), weatherWindow);
-            uiManager.addStaticText(new Vector2(10, 90), new Vector2(200, 200), "666 C", font, weatherWindow);
-            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
-            uiManager.addStaticText(new Vector2(0, 0), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
-            uiManager.addStaticText(new Vector2(20, 50), new Vector2(200, 200), "420 MPH", small, windWindow);
-            weatherGraph = uiManager.addGraph(new Vector2(20,100), new Vector2(700, 650),small, windWindow);
+            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "666 C", font, weatherWindow);
+            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "Relative Humidity: 77%", font, humidityWindow);
+            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
+            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
+            uiManager.addStaticText(new Vector2(20, 150), new Vector2(200, 200), "420 MPH", small, windWindow);
+            weatherGraph = uiManager.addGraph(new Vector2(40,150), new Vector2(1000, 1000),small, windWindow);
 
             this.currentSlide = slides.Count - 1 ;
         }
