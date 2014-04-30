@@ -334,7 +334,7 @@ namespace WinFormsGraphicsDevice
         {
             for (int i = 0; i < slides.Count; i++)
             {
-                slides[i].setPosition(new Vector2((currentSlide - i) * 1366, 0));
+                slides[i].setPosition(new Vector2((currentSlide - i) * WINDOWX, 0));
             }
         }
 

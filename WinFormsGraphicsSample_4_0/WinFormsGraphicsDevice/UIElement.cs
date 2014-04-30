@@ -130,7 +130,7 @@ namespace WinFormsGraphicsDevice
             {
                 //slide off to the left
                 Vector2 nPosition = position;
-                nPosition.X -= 10;
+                nPosition.X -= 20;
                 position = nPosition;
                 if (position.X < (oldX - size.X))
                 {
@@ -142,7 +142,7 @@ namespace WinFormsGraphicsDevice
             {
                 //slide off to the right
                 Vector2 nPosition = position;
-                nPosition.X += 10;
+                nPosition.X += 20;
                 position = nPosition;
                 if (position.X > (oldX + size.X))
                 {
