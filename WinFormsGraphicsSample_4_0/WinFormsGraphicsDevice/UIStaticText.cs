@@ -26,7 +26,7 @@ namespace WinFormsGraphicsDevice
             if (visible)
             {
                 //draw two times, one for shadow
-                batch.DrawString(font, text, absolutePosition + new Vector2(-2,2), Color.Black);
+                batch.DrawString(font, text, absolutePosition + new Vector2(-3,3), Color.Black);
                 batch.DrawString(font, text, absolutePosition, Color.White);
             }
             base.draw(batch);

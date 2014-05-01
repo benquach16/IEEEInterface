@@ -56,12 +56,9 @@ namespace WinFormsGraphicsDevice
         UIManager uiManager;
         ContentManager Content;
         UIWindow sidebar;
-        UIWindow humidityWindow;
-        UIWindow windWindow;
         UIButton pongButton;
         UIButton froggerButton;
-        UIGraph weatherGraph;
-
+        SlideWind windWindow;
         Background backGrnd;
 
         int currentSlide;
@@ -110,12 +107,10 @@ namespace WinFormsGraphicsDevice
 
             uiManager = new UIManager(GraphicsDevice);
 
-            //infoWindow = uiManager.addWindow(new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             //use windowdiff as offset
-            //weatherWindow = uiManager.addWindow(new Vector2(WINDOWX+WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
             SlideTemp weatherWindow = uiManager.createTempuratureSlide(Content, new Vector2(WINDOWX + WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
-            humidityWindow = uiManager.addWindow(new Vector2((WINDOWX * 2) + WINDOWDIFF*2, 0), new Vector2(WINDOWX, WINDOWY));
-            windWindow = uiManager.addWindow(new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
+            SlideHumidity humidityWindow = uiManager.createHumiditySlide(Content, new Vector2((WINDOWX * 2) + WINDOWDIFF * 2, 0), new Vector2(WINDOWX, WINDOWY));
+            windWindow = uiManager.createWindSlide(Content, new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
             SlideInfo infoWindow = uiManager.createInfoSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             slides.Add(windWindow);
             slides.Add(humidityWindow);
@@ -125,18 +120,8 @@ namespace WinFormsGraphicsDevice
             froggerButton = uiManager.addButton(new Vector2(30, 500), new Vector2(380, 70), "Frogger", fontSize32, sidebar);
             pongButton = uiManager.addButton(new Vector2(30, 600), new Vector2(380, 70), "Pong", fontSize32, sidebar);
             
-            //uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "UCR Information", font, infoWindow);
-            //uiManager.addStaticText(new Vector2(20, 150), new Vector2(200, 200), "It is 14 April, 2077", fontSize48, infoWindow);
-            //uiManager.addStaticText(new Vector2(20, 300), new Vector2(400, 400), "Information about UCR goes here", small, infoWindow);
-            //uiManager.addStaticText(new Vector2(20, 20), new Vector2(200,200), "Weather - Tempurature", font, weatherWindow);
-            //weatherImage = uiManager.addImage(new Vector2(400, 20), Content.Load<Texture2D>("Cloudy"), weatherWindow);
-            //uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "666 C", fontSize48, weatherWindow);
-            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "The Relative Humidity is 77%", fontSize32, humidityWindow);
-            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
-            uiManager.addStaticText(new Vector2(20, 250), new Vector2(200, 200), "The Dew Point is 35 C", fontSize32, humidityWindow);
-            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
-            uiManager.addStaticText(new Vector2(20, 150), new Vector2(200, 200), "420 MPH", small, windWindow);
-            weatherGraph = uiManager.addGraph(new Vector2(60,1000), new Vector2(1000, 1000),small, windWindow);
+
+
 
             this.currentSlide = slides.Count - 1 ;
         }
@@ -163,8 +148,8 @@ namespace WinFormsGraphicsDevice
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
             backGrnd.run((int)slides[slides.Count-1].getPosition().X);
             Random r = new Random();
-            
-            weatherGraph.update(r.Next()%200);
+
+            windWindow.update((float)r.Next() % 200);
             //draw cool background first
             //!!MAKE SURE THAT WE ASSIGN THE RECT TO 2560x2048!!
             //spriteBatch.Draw(bkg, new Rectangle(0, 0, WINDOWX, WINDOWY), Color.White);

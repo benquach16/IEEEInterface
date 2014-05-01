@@ -29,8 +29,10 @@ namespace WinFormsGraphicsDevice
         {
             this.weatherState = E_WEATHER_STATES.WEATHER_CLOUDY;
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Tempurature", font, this);
-            weatherImage = uiManager.addImage(new Vector2(400, 20), Content.Load<Texture2D>("Cloudy"), this);
-            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "666 C", fontSize48, this);
+
+            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "Today's tempurature is 666 C", fontSize48, this);
+            uiManager.addStaticText(new Vector2(20, 280), new Vector2(200, 200), "It is currently CLOUDY", fontSize32, this);
+            weatherImage = uiManager.addImage(new Vector2(1500, 20), Content.Load<Texture2D>("Cloudy"), this);
         }
         ~SlideTemp()
         {

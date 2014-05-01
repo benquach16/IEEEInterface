@@ -101,5 +101,18 @@ namespace WinFormsGraphicsDevice
             unparentedNodes.Add(ret);
             return ret;
         }
+        public SlideHumidity createHumiditySlide(ContentManager Content, Vector2 position, Vector2 size)
+        {
+            SlideHumidity ret = new SlideHumidity(graphicsDevice, this, Content, position, size);
+            unparentedNodes.Add(ret);
+            return ret;
+        }
+        public SlideWind createWindSlide(ContentManager Content, Vector2 position, Vector2 size)
+        {
+            SlideWind ret = new SlideWind(graphicsDevice, this, Content, position, size);
+            unparentedNodes.Add(ret);
+            return ret;
+        }
+        
     }
 }
