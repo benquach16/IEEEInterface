@@ -72,6 +72,7 @@
     <Compile Include="GraphicsHandler.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Slide.cs" />
     <Compile Include="SlideHumidity.cs" />
     <Compile Include="SlideInfo.cs" />
     <Compile Include="SlideTemp.cs" />

@@ -19,24 +19,15 @@ namespace WinFormsGraphicsDevice
         WEATHER_THUNDERSTORMS,
         WEATHER_RAIN
     };
-    class SlideTemp : UIWindow
+    class SlideTemp : Slide
     {
-        protected GraphicsDevice graphicsDevice;
-        protected UIManager uiManager;
-        protected ContentManager Content;
+
         protected UIImage weatherImage;
         E_WEATHER_STATES weatherState;
         public SlideTemp(GraphicsDevice graphicsDevice, UIManager uiManager, ContentManager Content, Vector2 position, Vector2 size) : 
-            base(graphicsDevice, position, size, null)
+            base(graphicsDevice, uiManager, Content, position, size)
         {
             this.weatherState = E_WEATHER_STATES.WEATHER_CLOUDY;
-            this.graphicsDevice = graphicsDevice;
-            this.uiManager = uiManager;
-            this.Content = Content;
-            SpriteFont font = Content.Load<SpriteFont>("defaultFont");
-            SpriteFont small = Content.Load<SpriteFont>("smallFont");
-            SpriteFont fontSize32 = Content.Load<SpriteFont>("Size32");
-            SpriteFont fontSize48 = Content.Load<SpriteFont>("fontSize48");
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Tempurature", font, this);
             weatherImage = uiManager.addImage(new Vector2(400, 20), Content.Load<Texture2D>("Cloudy"), this);
             uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "666 C", fontSize48, this);

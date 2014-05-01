@@ -56,14 +56,12 @@ namespace WinFormsGraphicsDevice
         UIManager uiManager;
         ContentManager Content;
         UIWindow sidebar;
-        UIWindow weatherWindow;
-        UIWindow infoWindow;
         UIWindow humidityWindow;
         UIWindow windWindow;
         UIButton pongButton;
         UIButton froggerButton;
         UIGraph weatherGraph;
-        UIImage weatherImage;
+
         Background backGrnd;
 
         int currentSlide;
@@ -115,7 +113,7 @@ namespace WinFormsGraphicsDevice
             //infoWindow = uiManager.addWindow(new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             //use windowdiff as offset
             //weatherWindow = uiManager.addWindow(new Vector2(WINDOWX+WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
-            SlideTemp weatherWindow = uiManager.createTempuratureSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
+            SlideTemp weatherWindow = uiManager.createTempuratureSlide(Content, new Vector2(WINDOWX + WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
             humidityWindow = uiManager.addWindow(new Vector2((WINDOWX * 2) + WINDOWDIFF*2, 0), new Vector2(WINDOWX, WINDOWY));
             windWindow = uiManager.addWindow(new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
             SlideInfo infoWindow = uiManager.createInfoSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
