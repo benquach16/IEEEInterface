@@ -148,7 +148,7 @@ namespace WinFormsGraphicsDevice
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
             uiManager.addStaticText(new Vector2(20, 150), new Vector2(200, 200), "420 MPH", small, windWindow);
-            weatherGraph = uiManager.addGraph(new Vector2(40,150), new Vector2(1000, 1000),small, windWindow);
+            weatherGraph = uiManager.addGraph(new Vector2(40,190), new Vector2(1000, 1000),small, windWindow);
 
             this.currentSlide = slides.Count - 1 ;
         }
