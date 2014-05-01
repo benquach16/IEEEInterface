@@ -13,7 +13,6 @@ namespace WinFormsGraphicsDevice
     {
         protected String text;
         protected Texture2D butTex;
-        protected float alpha;
         protected SpriteFont font;
         //Long consturctor
         public UIButton(GraphicsDevice graphicsDevice, Vector2 position, Vector2 size, String text, SpriteFont font, UIElement parent) :

@@ -48,6 +48,7 @@ namespace WinFormsGraphicsDevice
         {
 
         }
+
         //override pure virtual functions
         public override void draw(SpriteBatch batch)
         {

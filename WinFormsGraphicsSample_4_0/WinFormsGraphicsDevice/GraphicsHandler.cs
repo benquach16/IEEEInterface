@@ -37,7 +37,7 @@ namespace WinFormsGraphicsDevice
         //global variables
         const int WINDOWX = 2560;
         const int WINDOWY = 2048;
-        const int SIDEBARX = 300;
+        const int SIDEBARX = 430;
         const int WINDOWDIFF = 4;
 
         //initialize some varaibles here
@@ -53,7 +53,6 @@ namespace WinFormsGraphicsDevice
         Stopwatch timer;
         Stopwatch timer2;
         SpriteBatch spriteBatch;
-        Texture2D bkg;
         UIManager uiManager;
         ContentManager Content;
         UIWindow sidebar;
@@ -67,17 +66,6 @@ namespace WinFormsGraphicsDevice
         UIImage weatherImage;
         Background backGrnd;
 
-        //for weather
-
-        enum E_WEATHER_STATES
-        {
-            WEATHER_CLOUDY,
-            WEATHER_SUNNY,
-            WEATHER_DRIZZLE,
-            WEATHER_THUNDERSTORMS,
-            WEATHER_RAIN
-        };
-        E_WEATHER_STATES weatherState;
         int currentSlide;
         List<UIElement> slides;
         /// <summary>
@@ -93,7 +81,6 @@ namespace WinFormsGraphicsDevice
             this.froggerPressed = false;
             this.pongPressed = false;
             this.oldX = 0;
-            weatherState = E_WEATHER_STATES.WEATHER_RAIN;
             effect = new BasicEffect(GraphicsDevice);
             slides = new List<UIElement>();
             effect.VertexColorEnabled = true;
@@ -111,7 +98,7 @@ namespace WinFormsGraphicsDevice
 
             ServiceContainer services = new ServiceContainer();
             Content = new ContentManager(Services, "Content");
-            bkg = Content.Load<Texture2D>("bkg");
+            Texture2D bkg = Content.Load<Texture2D>("bkg");
             Texture2D over = Content.Load<Texture2D>("overlay");
             Texture2D clouds = Content.Load<Texture2D>("clouds");
             backGrnd = new Background(GraphicsDevice, bkg, over, clouds);
@@ -121,34 +108,37 @@ namespace WinFormsGraphicsDevice
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
             SpriteFont small = Content.Load<SpriteFont>("smallFont");
             SpriteFont fontSize32 = Content.Load<SpriteFont>("Size32");
+            SpriteFont fontSize48 = Content.Load<SpriteFont>("fontSize48");
 
             uiManager = new UIManager(GraphicsDevice);
 
-            infoWindow = uiManager.addWindow(new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
+            //infoWindow = uiManager.addWindow(new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             //use windowdiff as offset
-            weatherWindow = uiManager.addWindow(new Vector2(WINDOWX+WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
+            //weatherWindow = uiManager.addWindow(new Vector2(WINDOWX+WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
+            SlideTemp weatherWindow = uiManager.createTempuratureSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             humidityWindow = uiManager.addWindow(new Vector2((WINDOWX * 2) + WINDOWDIFF*2, 0), new Vector2(WINDOWX, WINDOWY));
             windWindow = uiManager.addWindow(new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
-            //SlideInfo tmp = uiManager.createInfoSlide(new Vector2(0, 0), new Vector2(1366, 768));
+            SlideInfo infoWindow = uiManager.createInfoSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             slides.Add(windWindow);
             slides.Add(humidityWindow);
             slides.Add(weatherWindow);
             slides.Add(infoWindow);
-            //slides.Add(tmp);
             sidebar = uiManager.addWindow(new Vector2(WINDOWX - SIDEBARX, 0), new Vector2(SIDEBARX, WINDOWY));
-            froggerButton = uiManager.addButton(new Vector2(10, 300), new Vector2(280, 60), "Frogger", font, sidebar);
-            pongButton = uiManager.addButton(new Vector2(10, 400), new Vector2(280, 60), "Pong", font, sidebar);
+            froggerButton = uiManager.addButton(new Vector2(30, 500), new Vector2(380, 70), "Frogger", fontSize32, sidebar);
+            pongButton = uiManager.addButton(new Vector2(30, 600), new Vector2(380, 70), "Pong", fontSize32, sidebar);
             
-            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "UCR Information", font, infoWindow);
-            uiManager.addStaticText(new Vector2(20, 160), new Vector2(400, 400), "Information about UCR goes here", small, infoWindow);
-            uiManager.addStaticText(new Vector2(20, 20), new Vector2(200,200), "Weather - Tempurature", font, weatherWindow);
-            weatherImage = uiManager.addImage(new Vector2(100, 20), Content.Load<Texture2D>("Cloudy"), weatherWindow);
-            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "666 C", font, weatherWindow);
-            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "Relative Humidity: 77%", font, humidityWindow);
+            //uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "UCR Information", font, infoWindow);
+            //uiManager.addStaticText(new Vector2(20, 150), new Vector2(200, 200), "It is 14 April, 2077", fontSize48, infoWindow);
+            //uiManager.addStaticText(new Vector2(20, 300), new Vector2(400, 400), "Information about UCR goes here", small, infoWindow);
+            //uiManager.addStaticText(new Vector2(20, 20), new Vector2(200,200), "Weather - Tempurature", font, weatherWindow);
+            //weatherImage = uiManager.addImage(new Vector2(400, 20), Content.Load<Texture2D>("Cloudy"), weatherWindow);
+            //uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "666 C", fontSize48, weatherWindow);
+            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "The Relative Humidity is 77%", fontSize32, humidityWindow);
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Humidity", font, humidityWindow);
+            uiManager.addStaticText(new Vector2(20, 250), new Vector2(200, 200), "The Dew Point is 35 C", fontSize32, humidityWindow);
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Wind Speed", font, windWindow);
             uiManager.addStaticText(new Vector2(20, 150), new Vector2(200, 200), "420 MPH", small, windWindow);
-            weatherGraph = uiManager.addGraph(new Vector2(40,190), new Vector2(1000, 1000),small, windWindow);
+            weatherGraph = uiManager.addGraph(new Vector2(60,1000), new Vector2(1000, 1000),small, windWindow);
 
             this.currentSlide = slides.Count - 1 ;
         }
@@ -172,7 +162,6 @@ namespace WinFormsGraphicsDevice
             // Set renderstates.
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
             updateSwipes();
-            setWeatherPictures();
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
             backGrnd.run((int)slides[slides.Count-1].getPosition().X);
             Random r = new Random();
@@ -180,7 +169,7 @@ namespace WinFormsGraphicsDevice
             weatherGraph.update(r.Next()%200);
             //draw cool background first
             //!!MAKE SURE THAT WE ASSIGN THE RECT TO 2560x2048!!
-            spriteBatch.Draw(bkg, new Rectangle(0, 0, WINDOWX, WINDOWY), Color.White);
+            //spriteBatch.Draw(bkg, new Rectangle(0, 0, WINDOWX, WINDOWY), Color.White);
             //spriteBatch.Draw(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
             backGrnd.draw(spriteBatch);
             uiManager.drawAll(spriteBatch);
@@ -338,41 +327,10 @@ namespace WinFormsGraphicsDevice
             for (int i = 0; i < slides.Count; i++)
             {
                 slides[i].setPosition(new Vector2((currentSlide - i) * WINDOWX, 0));
+                
             }
         }
 
-        //handle the changing of icons for weataher here
-        protected void setWeatherPictures()
-        {
-            switch(weatherState)
-            {
-                case E_WEATHER_STATES.WEATHER_CLOUDY:
-                {
-                    weatherImage.setImage(Content.Load<Texture2D>("Cloudy"));
-                    break;
-                }
-                case E_WEATHER_STATES.WEATHER_DRIZZLE:
-                {
-                    weatherImage.setImage(Content.Load<Texture2D>("Slight Drizzle"));
-                    break;
-                }
-                case E_WEATHER_STATES.WEATHER_RAIN:
-                {
-                    weatherImage.setImage(Content.Load<Texture2D>("Drizzle"));
-                    break;
-                }
-                case E_WEATHER_STATES.WEATHER_SUNNY:
-                {
-                    weatherImage.setImage(Content.Load<Texture2D>("Sunny"));
-                    break;
-                }
-                case E_WEATHER_STATES.WEATHER_THUNDERSTORMS:
-                {
-                    weatherImage.setImage(Content.Load<Texture2D>("Thunderstorms"));
-                    break;
-                }
-            }
 
-        }
     }
 }

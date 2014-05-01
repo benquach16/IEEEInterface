@@ -50,6 +50,7 @@ namespace WinFormsGraphicsDevice
             this.moved = false;
             this.stop = false;
             this.children = new List<UIElement>();
+            this.alpha = 0;
             //yay for c++ design pattersn
             if (parent != null)
             {
@@ -116,6 +117,9 @@ namespace WinFormsGraphicsDevice
             {
                 absolutePosition = position;
             }
+        }
+        public virtual void run()
+        {
         }
         //function that allows our slides to move out of the way gracefullyt
         //also only make it move by its size

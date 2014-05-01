@@ -72,8 +72,10 @@
     <Compile Include="GraphicsHandler.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SlideHumidity.cs" />
     <Compile Include="SlideInfo.cs" />
     <Compile Include="SlideTemp.cs" />
+    <Compile Include="SlideWind.cs" />
     <Compile Include="UIAnimator.cs" />
     <Compile Include="UIButton.cs" />
     <Compile Include="UIElement.cs" />

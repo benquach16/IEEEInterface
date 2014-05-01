@@ -87,9 +87,17 @@ namespace WinFormsGraphicsDevice
         }
 
         //for individual slides
-        public SlideInfo createInfoSlide(Vector2 position, Vector2 size)
+        //create information slide
+        public SlideInfo createInfoSlide(ContentManager Content, Vector2 position, Vector2 size)
         {
-            SlideInfo ret = new SlideInfo(graphicsDevice,this, position, size);
+            SlideInfo ret = new SlideInfo(graphicsDevice,this,Content, position, size);
+            unparentedNodes.Add(ret);
+            return ret;
+        }
+        //create a tempurature reading slide here
+        public SlideTemp createTempuratureSlide(ContentManager Content, Vector2 position, Vector2 size)
+        {
+            SlideTemp ret = new SlideTemp(graphicsDevice, this, Content, position, size);
             unparentedNodes.Add(ret);
             return ret;
         }

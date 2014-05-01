@@ -58,7 +58,7 @@ namespace WinFormsGraphicsDevice
                 batch.Draw(bkg, absolutePosition, Color.White);
                 batch.DrawString(font, "0", absolutePosition + new Vector2(0,size.Y), Color.White);
                 batch.DrawString(font, "0", absolutePosition + new Vector2(-30, size.Y-30), Color.White);
-                batch.DrawString(font, maxValue.ToString(), absolutePosition + new Vector2(-30, 0), Color.White);
+                batch.DrawString(font, maxValue.ToString(), absolutePosition + new Vector2(-font.MeasureString(maxValue.ToString()).X, 0), Color.White);
                 //and draw the lines
                 for (int i = 0; i < values.Count; i++)
                 {
