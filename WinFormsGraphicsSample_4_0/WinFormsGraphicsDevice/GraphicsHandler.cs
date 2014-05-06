@@ -59,8 +59,9 @@ namespace WinFormsGraphicsDevice
         UIButton pongButton;
         UIButton froggerButton;
         SlideWind windWindow;
+        SlideTemp weatherWindow;
         Background backGrnd;
-
+        Texture2D mousePNG;
         int currentSlide;
         List<UIElement> slides;
         /// <summary>
@@ -98,6 +99,7 @@ namespace WinFormsGraphicsDevice
             Texture2D clouds = Content.Load<Texture2D>("clouds");
             backGrnd = new Background(GraphicsDevice, bkg, over, clouds);
             Texture2D t = Content.Load<Texture2D>("test");
+            mousePNG = Content.Load<Texture2D>("mouse");
             
             //TODO: REPLACE THIS WITH NON SHITTY FONT
             SpriteFont font = Content.Load<SpriteFont>("defaultFont");
@@ -108,7 +110,7 @@ namespace WinFormsGraphicsDevice
             uiManager = new UIManager(GraphicsDevice);
 
             //use windowdiff as offset
-            SlideTemp weatherWindow = uiManager.createTempuratureSlide(Content, new Vector2(WINDOWX + WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
+            weatherWindow = uiManager.createTempuratureSlide(Content, new Vector2(WINDOWX + WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
             SlideHumidity humidityWindow = uiManager.createHumiditySlide(Content, new Vector2((WINDOWX * 2) + WINDOWDIFF * 2, 0), new Vector2(WINDOWX, WINDOWY));
             windWindow = uiManager.createWindSlide(Content, new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
             SlideInfo infoWindow = uiManager.createInfoSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
@@ -130,6 +132,7 @@ namespace WinFormsGraphicsDevice
         {
             MainForm.mX = e.X;
             MainForm.mY = e.Y;
+            
         }
         /// <summary>
         /// Draws the control.
@@ -150,12 +153,14 @@ namespace WinFormsGraphicsDevice
             Random r = new Random();
 
             windWindow.update((float)r.Next() % 200);
+            weatherWindow.run();
             //draw cool background first
             //!!MAKE SURE THAT WE ASSIGN THE RECT TO 2560x2048!!
             //spriteBatch.Draw(bkg, new Rectangle(0, 0, WINDOWX, WINDOWY), Color.White);
             //spriteBatch.Draw(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
             backGrnd.draw(spriteBatch);
             uiManager.drawAll(spriteBatch);
+            spriteBatch.Draw(mousePNG, new Vector2(MainForm.mX - 32, MainForm.mY - 32), Color.White);
             spriteBatch.End();
             //handle buttons
             if (froggerButton.getMouseOver())
