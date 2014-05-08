@@ -46,13 +46,29 @@ namespace WinFormsGraphicsDevice
         public MainForm()
         {
             InitializeComponent();
-
-            if (onDisplay)
+            /*
+            if (true)
             {
                 //Opens up the KinectMouse.
-                Process.Start(
-                    @"C:\Users\Nine\Desktop\Kinect Magic Cursor (1.7)\Kinect Magic Cursor\magiccursor.exe"
-                );
+                //Process.Start(
+                  //  @"C:\Users\Nine\Desktop\Kinect Magic Cursor (1.7)\Kinect Magic Cursor\magiccursor.exe"
+                //);
+                ProcessStartInfo info = new ProcessStartInfo(
+               @"WinFormsGraphicsDevice");
+                Process.Start(info);
+           
+            }
+            */
+            if (!onDisplay)
+            {
+                //initialise the mouse
+                onDisplay = true;
+                ProcessStartInfo info = new ProcessStartInfo(
+               @"C:/KinectMouse.exe");
+                
+                Process.Start(info);
+                this.Activate();
+                this.Show();
             }
 
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

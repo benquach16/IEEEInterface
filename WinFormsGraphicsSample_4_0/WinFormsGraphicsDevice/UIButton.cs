@@ -64,8 +64,8 @@ namespace WinFormsGraphicsDevice
         public bool getMouseOver()
         {
             //get the x and y coords for mouse and check
-            return ((Mouse.GetState().X > position.X && Mouse.GetState().X < position.X + size.X)
-                && (Mouse.GetState().Y > position.Y && Mouse.GetState().Y < position.Y + size.Y));
+            return ((Mouse.GetState().X > absolutePosition.X && Mouse.GetState().X < absolutePosition.X + size.X)
+                && (Mouse.GetState().Y > absolutePosition.Y && Mouse.GetState().Y < absolutePosition.Y + size.Y));
         }
 
         public String getText()

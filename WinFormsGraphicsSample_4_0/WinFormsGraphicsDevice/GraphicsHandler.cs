@@ -163,38 +163,32 @@ namespace WinFormsGraphicsDevice
             spriteBatch.Draw(mousePNG, new Vector2(MainForm.mX - 32, MainForm.mY - 32), Color.White);
             spriteBatch.End();
             //handle buttons
+
             if (froggerButton.getMouseOver())
             {
-                //wait for a second
-                if (!froggerPressed)
-                {
-                    timer2.Start();
-                    froggerPressed = true;
-                }
-                else
-                {
-                    if (timer2.ElapsedMilliseconds > 1000)
-                    {
-                        //execute frogger
-                        timer2.Reset();
-                        froggerPressed = false;
-                    }
-                }
+                //do frogger stuff here when we can
+                  
+
+   
             }
             if (pongButton.getMouseOver())
             {
-                //wait for a second
                 if (!pongPressed)
                 {
-                    timer2.Start();
                     pongPressed = true;
+                    timer2.Reset();
+                    timer2.Start();
                 }
                 else
                 {
-                    if (timer2.ElapsedMilliseconds > 1000)
+                    if (timer2.ElapsedMilliseconds > 2000)
                     {
-                        timer2.Reset();
-                        pongPressed = false;
+                        //wait for a second
+                        Process [] proc = Process.GetProcessesByName("KinectMouse");
+	                    proc[0].Kill();
+                        ProcessStartInfo info = new ProcessStartInfo(@"C:\pong.exe");
+                        Process.Start(info);
+                        Application.Exit();
                     }
                 }
             }
