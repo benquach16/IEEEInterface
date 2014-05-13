@@ -24,15 +24,23 @@ namespace WinFormsGraphicsDevice
 
         protected UIImage weatherImage;
         E_WEATHER_STATES weatherState;
+        float currentTemp;
+        UIStaticText tempText;
+        UIStaticText radText;
+        UIWindow yesterdaysTemp;
         public SlideTemp(GraphicsDevice graphicsDevice, UIManager uiManager, ContentManager Content, Vector2 position, Vector2 size) : 
             base(graphicsDevice, uiManager, Content, position, size)
         {
+            this.currentTemp = 0;
             this.weatherState = E_WEATHER_STATES.WEATHER_CLOUDY;
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Tempurature", font, this);
 
-            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "Today's tempurature is 666 C", fontSize48, this);
-            uiManager.addStaticText(new Vector2(20, 280), new Vector2(200, 200), "It is currently CLOUDY", fontSize32, this);
+            tempText = uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "Today's tempurature is 666 F", fontSize48, this);
+            radText = uiManager.addStaticText(new Vector2(20, 290), new Vector2(200, 200), "The Solar Radiation level is 500 watts per square meter", fontSize32, this);
+            uiManager.addStaticText(new Vector2(20, 370), new Vector2(200, 200), "It is currently CLOUDY", fontSize32, this);
             weatherImage = uiManager.addImage(new Vector2(1500, 20), Content.Load<Texture2D>("Cloudy"), this);
+            yesterdaysTemp = uiManager.addWindow(new Vector2(20, 600), new Vector2(400, 400), this);
+            //uiManager.addStaticText(new Vector2(10, 10), new Vector2(200, 200), "Yesterday's weather", fontSize32, yesterdaysTemp);
         }
         ~SlideTemp()
         {
@@ -42,6 +50,12 @@ namespace WinFormsGraphicsDevice
             //if we need to run anything here
             setWeatherPictures();
 
+        }
+        public void update(float newTmp, float newRad)
+        {
+            currentTemp = newTmp;
+            tempText.setText("Today's tempurature is "+newTmp.ToString() + " F");
+            radText.setText("The Solar Radiation Level is " + newRad.ToString() + " watts per square meter");
         }
         //handle the changing of icons for weataher here
         protected void setWeatherPictures()

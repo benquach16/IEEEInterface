@@ -13,16 +13,26 @@ namespace WinFormsGraphicsDevice
     //class to handle each slide invididually
     class SlideInfo : Slide
     {
+        UIStaticText dateText;
+        UIStaticText timeText;
+        
         public SlideInfo(GraphicsDevice graphicsDevice, UIManager uiManager, ContentManager Content, Vector2 position, Vector2 size) : 
             base(graphicsDevice, uiManager, Content, position, size)
         {
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "UCR Information", font, this);
-            uiManager.addStaticText(new Vector2(20, 150), new Vector2(200, 200), "It is 14 April, 2077", fontSize48, this);
-            uiManager.addStaticText(new Vector2(20, 300), new Vector2(400, 400), "Information about UCR goes here", small, this);
+            dateText = uiManager.addStaticText(new Vector2(20, 160), new Vector2(200, 200), "It is 14 April, 2077", fontSize48, this);
+            timeText = uiManager.addStaticText(new Vector2(20, 250), new Vector2(200, 200), "It is now 5 pm", fontSize48, this);
+            uiManager.addStaticText(new Vector2(20, 370), new Vector2(400, 400), "Information about UCR goes here", small, this);
         }
 
         ~SlideInfo()
         {
+        }
+
+        public void update(string date, string time)
+        {
+            dateText.setText("It is " + date);
+            timeText.setText("The current time is " + time);
         }
 
         public override void run()

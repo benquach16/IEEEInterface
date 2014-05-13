@@ -9,13 +9,21 @@ namespace WinFormsGraphicsDevice
 {
     class SlideHumidity : Slide
     {
+        UIStaticText humidityText;
+        UIStaticText dewText;
+        UIStaticText atmoText;
         public SlideHumidity(GraphicsDevice graphicsDevice, UIManager uiManager, ContentManager Content, Vector2 position, Vector2 size) :
             base(graphicsDevice, uiManager, Content, position, size)
         {
-            uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "The Relative Humidity is 77%", fontSize48, this);
+            humidityText = uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "The Relative Humidity is 77%", fontSize48, this);
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Humidity", font, this);
-            uiManager.addStaticText(new Vector2(20, 290), new Vector2(200, 200), "The Dew Point is 35 C", fontSize32, this);
-            uiManager.addStaticText(new Vector2(20, 360), new Vector2(200, 200), "The Atmospheric Pressure is 1000hPa", fontSize32, this);
+            dewText = uiManager.addStaticText(new Vector2(20, 290), new Vector2(200, 200), "The Dew Point is 35 C", fontSize32, this);
+            atmoText = uiManager.addStaticText(new Vector2(20, 360), new Vector2(200, 200), "The Atmospheric Pressure is 1000hPa", fontSize32, this);
+        }
+        public void update(float newHumid, float newDew)
+        {
+            dewText.setText("The Dew Point is " + newDew.ToString() + " C");
+            humidityText.setText("The Relative Humidity is " + newHumid.ToString() + " %");
         }
         public override void run()
         {

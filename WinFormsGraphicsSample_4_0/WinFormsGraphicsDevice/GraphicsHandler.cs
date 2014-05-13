@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using IEEEWeather;
 #endregion
 
 namespace WinFormsGraphicsDevice
@@ -60,10 +61,13 @@ namespace WinFormsGraphicsDevice
         UIButton froggerButton;
         SlideWind windWindow;
         SlideTemp weatherWindow;
+        SlideHumidity humidityWindow;
+        SlideInfo infoWindow;
         Background backGrnd;
         Texture2D mousePNG;
         int currentSlide;
         List<UIElement> slides;
+
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -80,7 +84,9 @@ namespace WinFormsGraphicsDevice
             effect = new BasicEffect(GraphicsDevice);
             slides = new List<UIElement>();
             effect.VertexColorEnabled = true;
-
+            WeatherListener weatherListener = new WeatherListener();
+            weatherListener.WeatherTick += weatherTick;
+            weatherListener.Start();
             // Start the animation timer.
             timer = Stopwatch.StartNew();
             timer2 = Stopwatch.StartNew();
@@ -111,9 +117,9 @@ namespace WinFormsGraphicsDevice
 
             //use windowdiff as offset
             weatherWindow = uiManager.createTempuratureSlide(Content, new Vector2(WINDOWX + WINDOWDIFF, 0), new Vector2(WINDOWX, WINDOWY));
-            SlideHumidity humidityWindow = uiManager.createHumiditySlide(Content, new Vector2((WINDOWX * 2) + WINDOWDIFF * 2, 0), new Vector2(WINDOWX, WINDOWY));
+            humidityWindow = uiManager.createHumiditySlide(Content, new Vector2((WINDOWX * 2) + WINDOWDIFF * 2, 0), new Vector2(WINDOWX, WINDOWY));
             windWindow = uiManager.createWindSlide(Content, new Vector2((WINDOWX * 3) + WINDOWDIFF * 3, 0), new Vector2(WINDOWX, WINDOWY));
-            SlideInfo infoWindow = uiManager.createInfoSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
+            infoWindow = uiManager.createInfoSlide(Content, new Vector2(0, 0), new Vector2(WINDOWX, WINDOWY));
             slides.Add(windWindow);
             slides.Add(humidityWindow);
             slides.Add(weatherWindow);
@@ -127,7 +133,17 @@ namespace WinFormsGraphicsDevice
 
             this.currentSlide = slides.Count - 1 ;
         }
-
+        private void weatherTick(object sender, WeatherTickEventArgs e)
+        {
+            WeatherUpdate wu = e.Update;
+            weatherWindow.update(wu.Temperature.ToF(), wu.Irradiation);
+            humidityWindow.update(wu.Humidity, wu.DewPoint.ToF());
+            infoWindow.update(wu.Time.ToLongDateString(), wu.Time.ToLongTimeString());
+            windWindow.update(wu.WindSpeedInstant,wu.WindDirectionInstant.ToRad());
+            
+            weatherWindow.run();
+            
+        }
         private void GH_MouseMove(object sender, MouseEventArgs e)
         {
             MainForm.mX = e.X;
@@ -150,9 +166,7 @@ namespace WinFormsGraphicsDevice
             updateSwipes();
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
             backGrnd.run((int)slides[slides.Count-1].getPosition().X);
-            Random r = new Random();
 
-            windWindow.update((float)r.Next() % 200);
             weatherWindow.run();
             //draw cool background first
             //!!MAKE SURE THAT WE ASSIGN THE RECT TO 2560x2048!!
@@ -314,5 +328,7 @@ namespace WinFormsGraphicsDevice
         }
 
 
+
+        public WeatherTickEventHandler weatherListener_WeatherTick { get; set; }
     }
 }

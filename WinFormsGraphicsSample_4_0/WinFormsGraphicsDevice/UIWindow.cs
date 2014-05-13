@@ -54,7 +54,7 @@ namespace WinFormsGraphicsDevice
         {
             //draw a rectangle that is the of the position and size specificed
             if(visible)
-                batch.Draw(winTex, position, Color.White*alpha);
+                batch.Draw(winTex, absolutePosition, Color.White*alpha);
             base.draw(batch);
         }
         public override UIElement.E_UI_TYPES getUIType()

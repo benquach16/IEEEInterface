@@ -74,7 +74,7 @@ namespace WinFormsGraphicsDevice
             if (parent != null)
             {
                 parent.addChild(this);
-                absolutePosition = parent.getPosition() + position;
+                absolutePosition = parent.getAbsolutePosition() + position;
             }
             else
             {
@@ -194,6 +194,10 @@ namespace WinFormsGraphicsDevice
         public Vector2 getPosition()
         {
             return position;
+        }
+        public Vector2 getAbsolutePosition()
+        {
+            return absolutePosition;
         }
         public Vector2 getSize()
         {
