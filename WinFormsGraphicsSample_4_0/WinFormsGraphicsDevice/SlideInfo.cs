@@ -23,6 +23,7 @@ namespace WinFormsGraphicsDevice
             dateText = uiManager.addStaticText(new Vector2(20, 160), new Vector2(200, 200), "It is 14 April, 2077", fontSize48, this);
             timeText = uiManager.addStaticText(new Vector2(20, 250), new Vector2(200, 200), "It is now 5 pm", fontSize48, this);
             uiManager.addStaticText(new Vector2(20, 370), new Vector2(400, 400), "Information about UCR goes here", small, this);
+            uiManager.addStaticText(new Vector2(20, 500), new Vector2(400, 400), "UCR has inconsistant weather", small, this);
         }
 
         ~SlideInfo()

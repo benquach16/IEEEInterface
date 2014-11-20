@@ -66,7 +66,7 @@ namespace WinFormsGraphicsDevice
                 ProcessStartInfo info = new ProcessStartInfo(
                @"C:/KinectMouse.exe");
                 
-                Process.Start(info);
+                //Process.Start(info);
                 this.Activate();
                 this.Show();
             }

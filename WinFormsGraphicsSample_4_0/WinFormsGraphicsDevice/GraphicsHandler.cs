@@ -136,8 +136,8 @@ namespace WinFormsGraphicsDevice
         private void weatherTick(object sender, WeatherTickEventArgs e)
         {
             WeatherUpdate wu = e.Update;
-            weatherWindow.update(wu.Temperature.ToF(), wu.Irradiation);
-            humidityWindow.update(wu.Humidity, wu.DewPoint.ToF());
+            weatherWindow.update(wu.Temperature.ToF(), wu.Irradiation, wu.Humidity);
+            humidityWindow.update(/*wu.Humidity,*/ wu.DewPoint.ToF());
             infoWindow.update(wu.Time.ToLongDateString(), wu.Time.ToLongTimeString());
             windWindow.update(wu.WindSpeedInstant,wu.WindDirectionInstant.ToRad());
             
