@@ -22,6 +22,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using IEEEWeather;
+using System.Net; //
+using System.IO; //
+using System.Text.RegularExpressions; //
 #endregion
 
 namespace WinFormsGraphicsDevice
@@ -133,13 +136,58 @@ namespace WinFormsGraphicsDevice
 
             this.currentSlide = slides.Count - 1 ;
         }
+
+        //parse html text file
+        private static string parse(string pat, string html)
+        {
+            Match htmlContent = Regex.Match(html, @pat, RegexOptions.Singleline);
+            if (htmlContent.Success)
+            {
+                string info = htmlContent.Groups[1].Value;
+                if (info.Contains('>'))
+                {
+                    info = Regex.Replace(info, "(.*?)>", "").Trim();
+                    return info;
+                }
+                else
+                    return info;
+            }
+            return "";
+        }
         private void weatherTick(object sender, WeatherTickEventArgs e)
         {
             WeatherUpdate wu = e.Update;
-            weatherWindow.update(wu.Temperature.ToF(), wu.Irradiation);
-            humidityWindow.update(wu.Humidity, wu.DewPoint.ToF());
+
+            //get data from wundeground html
+            var client = new WebClient();
+            client.Proxy = null;
+            client.DownloadStringCompleted += (p, q) =>
+            {
+                if (!q.Cancelled && q.Error == null)
+                {
+                    string html = (string)q.Result;
+
+                    //wunderground.com parse
+                    string temp = parse(@"curTemp(.*?)</span>", html);
+                    string solarRad = (float.Parse(temp)/.12).ToString(); //not on website
+                    string humidity = parse(@"<dfn>Humidity(.*?)</span>", html);
+                    string dewPoint = parse(@"<dfn>Dew Point(.*?)</span>", html); //fahrenheit
+                    string pressure = parse(@"<dfn>Pressure(.*?)</span>", html); //inches of mercury
+                    string windDirection = parse(@"Wind from(.*?)</span>", html); //direction only NW, N, SSE,...
+                    string windSpeed = parse(@"wind_gust_speed"":(.*?),", html); //miles per hour
+                    string weatherIcon = parse(@"curIcon(.*?)</span>", html); //clear, cloudy, fair, mostly cloudy,...
+
+                    weatherWindow.update(float.Parse(temp), float.Parse(solarRad));
+                    humidityWindow.update(float.Parse(humidity), float.Parse(dewPoint), float.Parse(pressure));
+                    windWindow.update(float.Parse(windSpeed), windDirection);
+                }
+            };
+            client.DownloadStringAsync(new Uri("http://www.wunderground.com/cgi-bin/findweather/hdfForecast?query=92521"));
+
+            //weatherWindow.update(wu.Temperature.ToF(), wu.Irradiation);
+            //humidityWindow.update(wu.Humidity, wu.DewPoint.ToF());
             infoWindow.update(wu.Time.ToLongDateString(), wu.Time.ToLongTimeString());
-            windWindow.update(wu.WindSpeedInstant,wu.WindDirectionInstant.ToRad());
+            //windWindow.update(wu.WindSpeedInstant,wu.WindDirectionInstant.ToRad());
             
             weatherWindow.run();
             

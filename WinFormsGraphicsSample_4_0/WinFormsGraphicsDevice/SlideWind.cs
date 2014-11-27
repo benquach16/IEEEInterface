@@ -29,11 +29,13 @@ namespace WinFormsGraphicsDevice
             base.run();
         }
         
-        public void update(float wndSpd, float dir)
+        public void update(float wndSpd, string dir)
         {
             weatherGraph.update(wndSpd);
-            instantWindSpeedText.setText("The current Wind Speed is " + wndSpd.ToString() + " M/S");
-            windDirectionText.setText("The Wind Direction is " + ((int)((dir*180)/3.141)).ToString() + " degrees from NORTH");
+            //instantWindSpeedText.setText("The current Wind Speed is " + wndSpd.ToString() + " M/S");
+            instantWindSpeedText.setText("The current Wind Speed is " + wndSpd.ToString() + " mph");
+            //windDirectionText.setText("The Wind Direction is " + ((int)((dir*180)/3.141)).ToString() + " degrees from NORTH");
+            windDirectionText.setText("The Wind Direction is " + dir);
         }
     }
 }

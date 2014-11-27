@@ -20,10 +20,14 @@ namespace WinFormsGraphicsDevice
             dewText = uiManager.addStaticText(new Vector2(20, 290), new Vector2(200, 200), "The Dew Point is 35 C", fontSize32, this);
             atmoText = uiManager.addStaticText(new Vector2(20, 360), new Vector2(200, 200), "The Atmospheric Pressure is 1000hPa", fontSize32, this);
         }
-        public void update(float newHumid, float newDew)
+        //public void update(float newHumid, float newDew)
+        public void update(float newHumid, float newDew, float newPressure)
         {
-            dewText.setText("The Dew Point is " + newDew.ToString() + " C");
+            //dewText.setText("The Dew Point is " + newDew.ToString() + " C");
+            dewText.setText("The Dew Point is " + newDew.ToString() + " F");
             humidityText.setText("The Relative Humidity is " + newHumid.ToString() + " %");
+
+            atmoText.setText("The Atmospheric Pressure is " + newPressure.ToString() + " in");
         }
         public override void run()
         {
