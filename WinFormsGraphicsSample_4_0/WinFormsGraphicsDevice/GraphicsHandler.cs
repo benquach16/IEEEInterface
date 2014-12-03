@@ -129,15 +129,13 @@ namespace WinFormsGraphicsDevice
             pongButton = uiManager.addButton(new Vector2(30, 600), new Vector2(380, 70), "Pong", fontSize32, sidebar);
             
 
-
-
             this.currentSlide = slides.Count - 1 ;
         }
         private void weatherTick(object sender, WeatherTickEventArgs e)
         {
             WeatherUpdate wu = e.Update;
-            weatherWindow.update(wu.Temperature.ToF(), wu.Irradiation, wu.Humidity);
-            humidityWindow.update(/*wu.Humidity,*/ wu.DewPoint.ToF());
+            weatherWindow.update(wu.Temperature.ToF(), wu.Humidity);
+            humidityWindow.update(wu.Irradiation, wu.DewPoint.ToF(), wu.WindSpeedInstant, wu.WindDirectionInstant.ToRad());
             infoWindow.update(wu.Time.ToLongDateString(), wu.Time.ToLongTimeString());
             windWindow.update(wu.WindSpeedInstant,wu.WindDirectionInstant.ToRad());
             
