@@ -34,9 +34,9 @@ namespace WinFormsGraphicsDevice
             this.weatherState = E_WEATHER_STATES.WEATHER_CLOUDY;
             uiManager.addStaticText(new Vector2(20, 20), new Vector2(200, 200), "Weather - Tempurature", font, this);
 
-            tempText = uiManager.addStaticText(new Vector2(20, 190), new Vector2(200, 200), "Today's tempurature is 666 F", fontSize48, this);
-            humidityText = uiManager.addStaticText(new Vector2(20, 370), new Vector2(200, 200), "The Relative Humidity is 77%", fontSize32, this);
-            uiManager.addStaticText(new Vector2(20, 470), new Vector2(200, 200), "It is currently CLOUDY", fontSize48, this);
+            tempText = uiManager.addStaticText(new Vector2(20, 200), new Vector2(200, 200), "Today's tempurature is 666 F", fontSize48, this);
+            humidityText = uiManager.addStaticText(new Vector2(20, 350), new Vector2(200, 200), "The Relative Humidity is 77%", fontSize32, this);
+            uiManager.addStaticText(new Vector2(20, 500), new Vector2(200, 200), "It is currently CLOUDY", fontSize48, this);
             weatherImage = uiManager.addImage(new Vector2(850, 400), Content.Load<Texture2D>("Cloudy"), this);
             
             
